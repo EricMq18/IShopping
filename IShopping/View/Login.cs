@@ -32,7 +32,13 @@ namespace IShopping.View
 
         private void btnRegistar_Click(object sender, EventArgs e)
         {
-            Program.forms(this, new Register());
+            int passar = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
+
+            if (passar == 0)
+            {
+                new UserController().registarUser(txtUser.Text, txtPass.Text);
+                MessageBox.Show("Registo Efetuado com sucesso");                
+            }
         }
     }
 }
