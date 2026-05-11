@@ -16,5 +16,10 @@ namespace IShopping.View
         {
             InitializeComponent();
         }
+
+        private void AdicionarArtigo_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
