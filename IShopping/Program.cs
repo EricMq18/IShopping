@@ -35,7 +35,14 @@ namespace IShopping
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormPrincipal());
+            Application.Run(new Login());
+        }
+
+        public static void forms(Form formAtual, Form formNovo)
+        {
+            formAtual.Hide();
+            formNovo.ShowDialog();
+            formAtual.Close();
         }
     }
 }

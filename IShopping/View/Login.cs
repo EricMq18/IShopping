@@ -26,7 +26,7 @@ namespace IShopping.View
 
             if(passar == 1)
             {
-                Program.forms(this, new Form1());
+                Program.forms(this, new FormPrincipal());
             }
         }
 
