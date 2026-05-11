@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace IShopping.View
 {
-    public partial class AdicionarArtigo : Form
+    public partial class GestaoArtigos : Form
     {
-        public AdicionarArtigo()
+        public GestaoArtigos()
         {
             InitializeComponent();
-        }
-
-        private void AdicionarArtigo_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

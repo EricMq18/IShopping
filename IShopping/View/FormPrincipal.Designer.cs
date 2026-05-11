@@ -1,6 +1,6 @@
-﻿namespace IShopping.View
+﻿namespace IShopping
 {
-    partial class AdicionarArtigo
+    partial class FormPrincipal
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // AdicionarArtigo
+            // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "AdicionarArtigo";
-            this.Text = "AdicionarArtigo";
-            this.Load += new System.EventHandler(this.AdicionarArtigo_Load);
+            this.Name = "FormPrincipal";
+            this.Text = "FormPrincipal";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
@@ -45,3 +45,4 @@
         #endregion
     }
 }
+

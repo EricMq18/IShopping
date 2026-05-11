@@ -70,11 +70,11 @@
     <Compile Include="View\AdicionarArtigo.Designer.cs">
       <DependentUpon>AdicionarArtigo.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\FormPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\FormPrincipal.Designer.cs">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +83,12 @@
     </Compile>
     <Compile Include="View\FormCompra.Designer.cs">
       <DependentUpon>FormCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\GestaoArtigos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\GestaoArtigos.Designer.cs">
+      <DependentUpon>GestaoArtigos.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Login.cs">
       <SubType>Form</SubType>
@@ -105,13 +111,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\Login.resx">
-      <DependentUpon>Login.cs</DependentUpon>
+    <EmbeddedResource Include="View\AdicionarArtigo.resx">
+      <DependentUpon>AdicionarArtigo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Register.resx">
-      <DependentUpon>Register.cs</DependentUpon>
+    <EmbeddedResource Include="View\FormPrincipal.resx">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
