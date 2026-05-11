@@ -5,7 +5,6 @@ namespace IShopping.View
 {
     public partial class FormPrincipal : Form
     {
-        // Variável para armazenar o ID do utilizador logado conforme requisito 3.a 
         private int _utilizadorId;
 
         public FormPrincipal()
@@ -57,30 +56,40 @@ namespace IShopping.View
 
         private void AbrirFormulario(string tipo)
         {
-            // Placeholder para ligação dos forms específicos conforme pedido
             Form formDestino = null;
 
             switch (tipo)
             {
                 case "Utilizadores":
-                    //formDestino = new FormUtilizadores(); 
+                    // Ainda não tens o formulário de Gestão de Utilizadores criado. 
+                    // formDestino = new GestaoUtilizadores(); 
                     break;
+
                 case "TiposArtigo":
-                    // formDestino = new FormTiposArtigo(); 
+                    // Ainda não tens o formulário de Tipos de Artigo criado.
+                    // formDestino = new GestaoTiposArtigo(); 
                     break;
+
                 case "Artigos":
-                    // formDestino = new FormArtigos(); 
+                    formDestino = new GestaoArtigos();
                     break;
+
                 case "Orcamentos":
-                    // formDestino = new FormOrcamentos(); 
+                    // Ainda não tens o formulário de Orçamentos criado.
+                    // formDestino = new GestaoOrcamentos(); 
                     break;
+
                 case "Planeamento":
+                    // Ainda não tens o formulário de Planeamento criado.
                     // formDestino = new FormPlaneamento(); 
                     break;
+
                 case "ModoCompra":
-                    // formDestino = new FormModoCompra(compraId); 
+                    formDestino = new FormCompra();
                     break;
+
                 case "Estatisticas":
+                    // Ainda não tens o formulário de Estatísticas criado.
                     // formDestino = new FormEstatisticas();
                     break;
             }
