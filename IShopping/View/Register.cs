@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IShopping.Controller;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,18 @@ namespace IShopping.View
         public Register()
         {
             InitializeComponent();
+        }
+
+        private void btnRegistar_Click(object sender, EventArgs e)
+        {
+            int passar = new UserController().UtilizadorValido(txtNewUser.Text, txtNewPass.Text);
+
+            if (passar == 0)
+            {
+                new UserController().registarUser(txtNewUser.Text, txtNewPass.Text);
+                MessageBox.Show("Registo Efetuado com sucesso");
+                Program.forms(this, new Login());
+            }
         }
     }
 }
