@@ -1,5 +1,9 @@
-﻿using System;
+﻿using IShopping.Controller;
+using IShopping.Model;
+using IShopping.View;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,9 +18,31 @@ namespace IShopping
         [STAThread]
         static void Main()
         {
+            Database.SetInitializer(new AppDbInitializer());
+            using (var db = new ShoppingContext())
+            {
+                var User = new user { username = "tester", password = "12345" };
+                bool existe = db.users.Any(c => c.username == User.username && c.password == User.password);
+
+                if (!existe)
+                {
+                    db.users.Add(User);
+                    db.SaveChanges();
+                }
+            }
+
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Login());
+        }
+
+        public static void forms(Form formAtual, Form formNovo)
+        {
+            formAtual.Hide();
+            formNovo.ShowDialog();
+            formAtual.Close();
         }
     }
 }
