@@ -19,7 +19,15 @@ namespace IShopping.Controller
             }
         }
 
-        public void registarUser(string username, string pass) { }
+        public  void registarUser(string user, string pass) 
+        {
+            using (var db = new ShoppingContext()) 
+            {
+                var novoUser = new user { username = user, password = pass};
+                db.users.Add(novoUser);
+                db.SaveChanges();
+            }
+        }
 
     }
 }

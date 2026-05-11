@@ -29,5 +29,10 @@ namespace IShopping.View
                 Program.forms(this, new Form1());
             }
         }
+
+        private void btnRegistar_Click(object sender, EventArgs e)
+        {
+            Program.forms(this, new Register());
+        }
     }
 }
