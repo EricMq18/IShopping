@@ -13,18 +13,53 @@ namespace IShopping.Controller
     {
         protected override void Seed(ShoppingContext context)
         {
-            // NÃO use 'using (var db = context)'. Use o 'context' que vem no parâmetro.
             var userAdmin = new user { username = "admin", password = "admin" };
             context.users.Add(userAdmin);
+            context.SaveChanges();
 
             var categoriaComida = new TipoArtigo { Categoria = "Comida" };
             context.tipos.Add(categoriaComida);
-
-            var Compra = new Compra { DataAlteracao = DateTime.Now, dataCriacao = DateTime.Now, dataFechar = DateTime.Now, estado = Estado.fechado, nome = "Teste" };
-            var itemCompra = new itemCompra { compra = Compra, CompraID = Compra.id, precoUnitario = 0, quantidadeAdquirida = 0 };
             context.SaveChanges();
 
-            // O base.Seed deve ser chamado, mas geralmente é a última coisa
+            var artigoTeste = new Artigo { Nome = "Arroz", TipoArtigoId = categoriaComida.Id };
+            context.artigos.Add(artigoTeste);
+            context.SaveChanges();
+            
+            var orcamentoMensal = new orcamento
+            {
+                mes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                valor_max = 300.00m,
+                CriadoPorUserId = userAdmin.id,
+                AlteradoPorUserId = userAdmin.id
+            };
+            context.orcamentos.Add(orcamentoMensal);
+            context.SaveChanges();
+
+            var compraAberta = new Compra
+            {
+                nome = "Compras Mensais",
+                estado = Estado.aberto,
+                dataCriacao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                CriadoPorUserId = userAdmin.id
+            };
+            context.compras.Add(compraAberta);
+            context.SaveChanges();
+
+            var item = new itemCompra
+            {
+                CompraID = compraAberta.id,
+                ArtigoId = artigoTeste.Id,
+                quantidadePrevista = 4,
+                quantidadeAdquirida = 0,
+                precoUnitario = 1.10m,
+                IsPrevisto = true,
+                CriadoPorUserId = userAdmin.id,
+                AlteradoPorUserId = userAdmin.id
+            };
+            context.itemCompras.Add(item);            
+            context.SaveChanges();
+
             base.Seed(context);
         }
 

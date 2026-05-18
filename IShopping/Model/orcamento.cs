@@ -13,5 +13,7 @@ namespace IShopping.Model
         public int id { get; set; }
         public DateTime mes {  get; set; }
         public decimal valor_max {  get; set; }
+        public int CriadoPorUserId { get; set; }
+        public int AlteradoPorUserId { get; set; }
     }
 }
