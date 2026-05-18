@@ -22,7 +22,8 @@ namespace IShopping.Model
         public DateTime dataCriacao { get; set; } = DateTime.Now;
         public DateTime DataAlteracao { get; set; }
         public DateTime dataFechar { get; set; }
-
+        public int CriadoPorUserId { get; set; }
+        public int? FechadaPorUserId { get; set; }
         public List<itemCompra> listaCompra { get; set; } = new List<itemCompra>();
     }
 }
