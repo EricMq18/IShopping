@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IShopping.Model
-{    
-    public class TipoArtigo
+{
+    public class orcamento
     {
-        [Key]   
-        public int Id { get; set; }
-
-        [StringLength(150), Required]
-        public string Categoria { get; set; }        
+        [Key]
+        public int id { get; set; }
+        public DateTime mes {  get; set; }
+        public decimal valor_max {  get; set; }
     }
 }

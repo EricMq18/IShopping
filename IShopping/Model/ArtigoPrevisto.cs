@@ -6,13 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IShopping.Model
-{    
-    public class TipoArtigo
+{
+    public class ArtigoPrevisto
     {
-        [Key]   
-        public int Id { get; set; }
-
-        [StringLength(150), Required]
-        public string Categoria { get; set; }        
+        [Key]
+        public int id { get; set; }
+        public int qntPrevista {  get; set; }
     }
 }

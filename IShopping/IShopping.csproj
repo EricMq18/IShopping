@@ -60,7 +60,11 @@
     <Compile Include="Controller\RegisterController.cs" />
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Artigo.cs" />
-    <Compile Include="Model\compra.cs" />
+    <Compile Include="Model\ArtigoNaoPrevisto.cs" />
+    <Compile Include="Model\ArtigoPrevisto.cs" />
+    <Compile Include="Model\Compra.cs" />
+    <Compile Include="Model\itemCompra.cs" />
+    <Compile Include="Model\orcamento.cs" />
     <Compile Include="Model\ShoppingContext.cs" />
     <Compile Include="Model\TipoArtigo.cs" />
     <Compile Include="Model\user.cs" />
