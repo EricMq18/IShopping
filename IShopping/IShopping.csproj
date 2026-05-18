@@ -57,6 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\AppDbInitializer.cs" />
+    <Compile Include="Controller\ArtigoController.cs" />
+    <Compile Include="Controller\CategoriaController.cs" />
     <Compile Include="Controller\RegisterController.cs" />
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Artigo.cs" />
@@ -68,11 +70,11 @@
     <Compile Include="Model\ShoppingContext.cs" />
     <Compile Include="Model\TipoArtigo.cs" />
     <Compile Include="Model\user.cs" />
-    <Compile Include="View\AdicionarArtigo.cs">
+    <Compile Include="View\GestaoCategorias.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\AdicionarArtigo.Designer.cs">
-      <DependentUpon>AdicionarArtigo.cs</DependentUpon>
+    <Compile Include="View\GestaoCategorias.Designer.cs">
+      <DependentUpon>GestaoCategorias.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,11 +111,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\AdicionarArtigo.resx">
-      <DependentUpon>AdicionarArtigo.cs</DependentUpon>
+    <EmbeddedResource Include="View\GestaoArtigos.resx">
+      <DependentUpon>GestaoArtigos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\GestaoCategorias.resx">
+      <DependentUpon>GestaoCategorias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

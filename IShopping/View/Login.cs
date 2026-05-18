@@ -40,5 +40,10 @@ namespace IShopping.View
                 MessageBox.Show("Registo Efetuado com sucesso");                
             }
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
