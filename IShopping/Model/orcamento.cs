@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IShopping.Model
+{
+    public class orcamento
+    {
+        [Key]
+        public int id { get; set; }
+        public DateTime mes {  get; set; }
+        public decimal valor_max {  get; set; }
+        public int CriadoPorUserId { get; set; }
+        public int AlteradoPorUserId { get; set; }
+    }
+}
