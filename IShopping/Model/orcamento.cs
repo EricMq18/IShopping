@@ -11,9 +11,9 @@ namespace IShopping.Model
     {
         [Key]
         public int id { get; set; }
-        public DateTime mes {  get; set; }
-        public decimal valor_max {  get; set; }
-        public int CriadoPorUserId { get; set; }
-        public int AlteradoPorUserId { get; set; }
+        public DateTime mes { get; set; }
+        public decimal valor_max { get; set; }        
+        public user userCriador { get; set; }
+        public user userAlterador { get; set; }
     }
 }
