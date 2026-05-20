@@ -13,51 +13,46 @@ namespace IShopping.Controller
     {
         protected override void Seed(ShoppingContext context)
         {
-            var userAdmin = new user { username = "admin", password = "admin" };
-            context.users.Add(userAdmin);
-            context.SaveChanges();
+            var user = new user { username = "admin", password = "admin" };
+            context.users.Add(user);
 
             var categoriaComida = new TipoArtigo { Categoria = "Comida" };
             context.tipos.Add(categoriaComida);
-            context.SaveChanges();
 
-            var artigoTeste = new Artigo { Nome = "Arroz", TipoArtigoId = categoriaComida.Id };
+            var artigoTeste = new Artigo { Nome = "Arroz", TipoArtigo = categoriaComida };
             context.artigos.Add(artigoTeste);
-            context.SaveChanges();
-            
-            var orcamentoMensal = new orcamento
-            {
-                mes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
-                valor_max = 300.00m,
-                CriadoPorUserId = userAdmin.id,
-                AlteradoPorUserId = userAdmin.id
-            };
-            context.orcamentos.Add(orcamentoMensal);
-            context.SaveChanges();
 
             var compraAberta = new Compra
             {
-                nome = "Compras Mensais",
+                nome = "Compras Mensais Continente",
                 estado = Estado.aberto,
                 dataCriacao = DateTime.Now,
                 DataAlteracao = DateTime.Now,
-                CriadoPorUserId = userAdmin.id
-            };
+                userCriador = user
+            };            
             context.compras.Add(compraAberta);
-            context.SaveChanges();
 
             var item = new itemCompra
             {
-                CompraID = compraAberta.id,
-                ArtigoId = artigoTeste.Id,
+                compra = compraAberta,   
+                artigo = artigoTeste,    
                 quantidadePrevista = 4,
                 quantidadeAdquirida = 0,
                 precoUnitario = 1.10m,
                 IsPrevisto = true,
-                CriadoPorUserId = userAdmin.id,
-                AlteradoPorUserId = userAdmin.id
+                userCriador = user,
+                userAlterador = user
             };
-            context.itemCompras.Add(item);            
+            context.itemCompras.Add(item);
+
+            var orcamento = new orcamento
+            {
+                mes = DateTime.Now,
+                userCriador = user,
+                valor_max = 1.1m
+            };
+            context.orcamentos.Add(orcamento);
+
             context.SaveChanges();
 
             base.Seed(context);
