@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IShopping.Model
 {
-    public class Artigo
+    public class ArtigoNaoPrevisto
     {
         [Key]
-        public int Id { get; set; }
-
+        public int id { get; set; }
         [StringLength(150)]
-        public string Nome { get; set; }
-        public int TipoArtigoId { get; set; }
-        public TipoArtigo TipoArtigo { get; set; }
+        public string descricao {  get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace IShopping
 {
     internal static class Program
     {
+        public static int UtilizadorLogadoId { get; set; }
+        public static string UtilizadorLogadoNome { get; set; }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -19,23 +21,9 @@ namespace IShopping
         static void Main()
         {
             Database.SetInitializer(new AppDbInitializer());
-            using (var db = new ShoppingContext())
-            {
-                var User = new user { username = "tester", password = "12345" };
-                bool existe = db.users.Any(c => c.username == User.username && c.password == User.password);
-
-                if (!existe)
-                {
-                    db.users.Add(User);
-                    db.SaveChanges();
-                }
-            }
-
-
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            Application.Run(new GestaoArtigos());
         }
 
         public static void forms(Form formAtual, Form formNovo)
