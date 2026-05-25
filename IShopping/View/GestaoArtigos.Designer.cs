@@ -35,18 +35,17 @@
             this.btnAddArtigo = new System.Windows.Forms.Button();
             this.btnDeleteArtigo = new System.Windows.Forms.Button();
             this.btnEditArtigo = new System.Windows.Forms.Button();
-            this.dgvArtigos = new System.Windows.Forms.DataGridView();
             this.btnPesquisar = new System.Windows.Forms.Button();
             this.cbPesquisar = new System.Windows.Forms.ComboBox();
             this.txtPesquisar = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArtigos)).BeginInit();
+            this.lstArtigos = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(369, 171);
+            this.label3.Location = new System.Drawing.Point(361, 105);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 16);
             this.label3.TabIndex = 23;
@@ -64,77 +63,71 @@
             // cbSelectCategoria
             // 
             this.cbSelectCategoria.FormattingEnabled = true;
-            this.cbSelectCategoria.Location = new System.Drawing.Point(369, 218);
+            this.cbSelectCategoria.Location = new System.Drawing.Point(361, 152);
             this.cbSelectCategoria.Name = "cbSelectCategoria";
-            this.cbSelectCategoria.Size = new System.Drawing.Size(121, 24);
+            this.cbSelectCategoria.Size = new System.Drawing.Size(172, 24);
             this.cbSelectCategoria.TabIndex = 21;
             // 
             // txtNameArtigo
             // 
-            this.txtNameArtigo.Location = new System.Drawing.Point(369, 190);
+            this.txtNameArtigo.Location = new System.Drawing.Point(361, 124);
             this.txtNameArtigo.Name = "txtNameArtigo";
-            this.txtNameArtigo.Size = new System.Drawing.Size(270, 22);
+            this.txtNameArtigo.Size = new System.Drawing.Size(309, 22);
             this.txtNameArtigo.TabIndex = 20;
             // 
             // btnAddArtigo
             // 
-            this.btnAddArtigo.Location = new System.Drawing.Point(369, 248);
+            this.btnAddArtigo.Location = new System.Drawing.Point(436, 192);
             this.btnAddArtigo.Name = "btnAddArtigo";
-            this.btnAddArtigo.Size = new System.Drawing.Size(75, 23);
+            this.btnAddArtigo.Size = new System.Drawing.Size(165, 23);
             this.btnAddArtigo.TabIndex = 19;
             this.btnAddArtigo.Text = "Adicionar";
             this.btnAddArtigo.UseVisualStyleBackColor = true;
+            this.btnAddArtigo.Click += new System.EventHandler(this.btnAddArtigo_Click);
             // 
             // btnDeleteArtigo
             // 
-            this.btnDeleteArtigo.Location = new System.Drawing.Point(369, 134);
+            this.btnDeleteArtigo.Location = new System.Drawing.Point(436, 250);
             this.btnDeleteArtigo.Name = "btnDeleteArtigo";
-            this.btnDeleteArtigo.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteArtigo.Size = new System.Drawing.Size(165, 23);
             this.btnDeleteArtigo.TabIndex = 18;
             this.btnDeleteArtigo.Text = "Eliminar";
             this.btnDeleteArtigo.UseVisualStyleBackColor = true;
+            this.btnDeleteArtigo.Click += new System.EventHandler(this.btnDeleteArtigo_Click);
             // 
             // btnEditArtigo
             // 
-            this.btnEditArtigo.Location = new System.Drawing.Point(369, 105);
+            this.btnEditArtigo.Location = new System.Drawing.Point(439, 221);
             this.btnEditArtigo.Name = "btnEditArtigo";
-            this.btnEditArtigo.Size = new System.Drawing.Size(75, 23);
+            this.btnEditArtigo.Size = new System.Drawing.Size(162, 23);
             this.btnEditArtigo.TabIndex = 17;
-            this.btnEditArtigo.Text = "Editar";
+            this.btnEditArtigo.Text = "Guardar Alterações";
             this.btnEditArtigo.UseVisualStyleBackColor = true;
-            // 
-            // dgvArtigos
-            // 
-            this.dgvArtigos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvArtigos.Location = new System.Drawing.Point(28, 105);
-            this.dgvArtigos.Name = "dgvArtigos";
-            this.dgvArtigos.RowHeadersWidth = 51;
-            this.dgvArtigos.RowTemplate.Height = 24;
-            this.dgvArtigos.Size = new System.Drawing.Size(335, 357);
-            this.dgvArtigos.TabIndex = 16;
+            this.btnEditArtigo.Click += new System.EventHandler(this.btnEditArtigo_Click);
             // 
             // btnPesquisar
             // 
-            this.btnPesquisar.Location = new System.Drawing.Point(433, 47);
+            this.btnPesquisar.Location = new System.Drawing.Point(542, 49);
             this.btnPesquisar.Name = "btnPesquisar";
-            this.btnPesquisar.Size = new System.Drawing.Size(80, 23);
+            this.btnPesquisar.Size = new System.Drawing.Size(128, 23);
             this.btnPesquisar.TabIndex = 15;
-            this.btnPesquisar.Text = "Pesquisar";
+            this.btnPesquisar.Text = "Procurar";
             this.btnPesquisar.UseVisualStyleBackColor = true;
+            this.btnPesquisar.Click += new System.EventHandler(this.btnPesquisar_Click);
             // 
             // cbPesquisar
             // 
             this.cbPesquisar.FormattingEnabled = true;
-            this.cbPesquisar.Location = new System.Drawing.Point(305, 47);
+            this.cbPesquisar.Location = new System.Drawing.Point(361, 49);
             this.cbPesquisar.Name = "cbPesquisar";
-            this.cbPesquisar.Size = new System.Drawing.Size(121, 24);
+            this.cbPesquisar.Size = new System.Drawing.Size(175, 24);
             this.cbPesquisar.TabIndex = 14;
             // 
             // txtPesquisar
             // 
             this.txtPesquisar.Location = new System.Drawing.Point(28, 49);
             this.txtPesquisar.Name = "txtPesquisar";
-            this.txtPesquisar.Size = new System.Drawing.Size(271, 22);
+            this.txtPesquisar.Size = new System.Drawing.Size(321, 22);
             this.txtPesquisar.TabIndex = 13;
             // 
             // label1
@@ -147,11 +140,22 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Gestão Artigos";
             // 
+            // lstArtigos
+            // 
+            this.lstArtigos.FormattingEnabled = true;
+            this.lstArtigos.ItemHeight = 16;
+            this.lstArtigos.Location = new System.Drawing.Point(28, 105);
+            this.lstArtigos.Name = "lstArtigos";
+            this.lstArtigos.Size = new System.Drawing.Size(321, 356);
+            this.lstArtigos.TabIndex = 24;
+            this.lstArtigos.SelectedIndexChanged += new System.EventHandler(this.lstArtigos_SelectedIndexChanged);
+            // 
             // GestaoArtigos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 478);
+            this.ClientSize = new System.Drawing.Size(686, 478);
+            this.Controls.Add(this.lstArtigos);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbSelectCategoria);
@@ -159,7 +163,6 @@
             this.Controls.Add(this.btnAddArtigo);
             this.Controls.Add(this.btnDeleteArtigo);
             this.Controls.Add(this.btnEditArtigo);
-            this.Controls.Add(this.dgvArtigos);
             this.Controls.Add(this.btnPesquisar);
             this.Controls.Add(this.cbPesquisar);
             this.Controls.Add(this.txtPesquisar);
@@ -167,7 +170,6 @@
             this.Name = "GestaoArtigos";
             this.Text = "GestaoArtigos";
             this.Load += new System.EventHandler(this.GestaoArtigos_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArtigos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,10 +184,10 @@
         private System.Windows.Forms.Button btnAddArtigo;
         private System.Windows.Forms.Button btnDeleteArtigo;
         private System.Windows.Forms.Button btnEditArtigo;
-        private System.Windows.Forms.DataGridView dgvArtigos;
         private System.Windows.Forms.Button btnPesquisar;
         private System.Windows.Forms.ComboBox cbPesquisar;
         private System.Windows.Forms.TextBox txtPesquisar;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lstArtigos;
     }
 }

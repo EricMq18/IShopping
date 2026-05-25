@@ -40,7 +40,7 @@ namespace IShopping
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GestaoCategorias());
+            Application.Run(new GestaoArtigos());
         }
 
         public static void forms(Form formAtual, Form formNovo)

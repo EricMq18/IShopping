@@ -34,16 +34,12 @@ namespace IShopping.View
 
         private void CarregarComboBoxes()
         {
-            // Pede as categorias ao CategoriaController
             var categoriasParaFormulario = _categoriaController.ObterCategorias();
 
-            // 1. ComboBox de Adicionar/Editar Artigo
             cbSelectCategoria.DataSource = categoriasParaFormulario;
             cbSelectCategoria.DisplayMember = "Categoria";
             cbSelectCategoria.ValueMember = "Id";
 
-            // 2. ComboBox do Filtro (Topo) - Precisamos de adicionar a opção "Todos"
-            // Fazemos uma nova lista para não misturar com a ComboBox de baixo
             var categoriasParaFiltro = _categoriaController.ObterCategorias();
             categoriasParaFiltro.Insert(0, new TipoArtigo { Id = 0, Categoria = "Todos" });
 
@@ -52,33 +48,50 @@ namespace IShopping.View
             cbPesquisar.ValueMember = "Id";
         }
 
-        private void CarregarArtigos(int idTipoFiltro)
+        private void CarregarArtigos(int idTipoFiltro, string termoPesquisa = "")
         {
-            dgvArtigos.DataSource = null;
-            // Pede os dados formatados ao ArtigoController
-            dgvArtigos.DataSource = _artigoController.ObterArtigosParaGrelha(idTipoFiltro);
+            lstArtigos.DataSource = null;
+
+            // Passamos o ID e o Texto para o Controller
+            lstArtigos.DataSource = _artigoController.ObterArtigosParaLista(idTipoFiltro, termoPesquisa);
+            lstArtigos.DisplayMember = "DisplayText";
+            lstArtigos.ValueMember = "Id";
+
+            // NOVO: Remove o destaque/seleção do primeiro item da lista
+            lstArtigos.ClearSelected();
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
+            int idFiltro = 0;
+
+            // Vê qual é a categoria selecionada (se existir)
             if (cbPesquisar.SelectedValue != null)
             {
-                int idFiltro = (int)cbPesquisar.SelectedValue;
-                CarregarArtigos(idFiltro);
+                idFiltro = (int)cbPesquisar.SelectedValue;
             }
+
+            // Lê o texto que o utilizador escreveu (Muda 'txtPesquisa' para o nome da tua caixa de texto!)
+            string textoPesquisa = txtPesquisar.Text;
+
+            // Chama a função com os dois filtros
+            CarregarArtigos(idFiltro, textoPesquisa);
         }
 
-        private void dgvArtigos_CellClick(object sender, DataGridViewCellEventArgs e)
+        // NOVO EVENTO: Substitui o CellClick
+        private void lstArtigos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (lstArtigos.SelectedItem != null && lstArtigos.SelectedValue is int)
             {
-                // Guarda o ID e preenche os campos
-                idArtigoSelecionado = (int)dgvArtigos.Rows[e.RowIndex].Cells["Id"].Value;
-                txtNameArtigo.Text = dgvArtigos.Rows[e.RowIndex].Cells["Nome"].Value.ToString();
+                idArtigoSelecionado = (int)lstArtigos.SelectedValue;
 
-                // Tenta selecionar a categoria correta na ComboBox com base no nome que está na grelha
-                string nomeCategoria = dgvArtigos.Rows[e.RowIndex].Cells["Categoria"].Value.ToString();
-                cbSelectCategoria.SelectedIndex = cbSelectCategoria.FindStringExact(nomeCategoria);
+                // Vamos ao Controller buscar o nome real e a categoria para preencher os controlos
+                var artigoDetalhe = _artigoController.ObterArtigoPorId(idArtigoSelecionado);
+                if (artigoDetalhe != null)
+                {
+                    txtNameArtigo.Text = artigoDetalhe.Nome;
+                    cbSelectCategoria.SelectedValue = artigoDetalhe.TipoArtigoId;
+                }
             }
         }
 
@@ -88,20 +101,18 @@ namespace IShopping.View
             {
                 MessageBox.Show("Preencha o nome e selecione uma categoria.");
                 return;
-            }   
+            }
 
-            // Delega para o Controller
             _artigoController.AdicionarArtigo(txtNameArtigo.Text, (int)cbSelectCategoria.SelectedValue);
 
             LimparFormulario();
-            CarregarArtigos((int)cbPesquisar.SelectedValue); // Mantém o filtro atual
+            CarregarArtigos((int)cbPesquisar.SelectedValue);
         }
 
         private void btnEditArtigo_Click(object sender, EventArgs e)
         {
             if (idArtigoSelecionado == 0 || string.IsNullOrWhiteSpace(txtNameArtigo.Text)) return;
 
-            // Assumindo que tens um método AtualizarArtigo no teu controller
             _artigoController.AtualizarArtigo(idArtigoSelecionado, txtNameArtigo.Text, (int)cbSelectCategoria.SelectedValue);
 
             LimparFormulario();
@@ -112,7 +123,6 @@ namespace IShopping.View
         {
             if (idArtigoSelecionado == 0) return;
 
-            // Delega para o Controller
             _artigoController.EliminarArtigo(idArtigoSelecionado);
 
             LimparFormulario();
@@ -124,6 +134,7 @@ namespace IShopping.View
             txtNameArtigo.Clear();
             idArtigoSelecionado = 0;
             if (cbSelectCategoria.Items.Count > 0) cbSelectCategoria.SelectedIndex = 0;
+            lstArtigos.ClearSelected(); // Tira a seleção visual da lista
         }
 
     }

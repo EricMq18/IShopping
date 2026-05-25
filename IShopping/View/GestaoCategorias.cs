@@ -14,13 +14,13 @@ namespace IShopping.View
 {
     public partial class GestaoCategorias : Form
     {
-        private CategoriaController _controller; // Instância do Controller
+        private CategoriaController _controller;
         private int idCategoriaSelecionada = 0;
 
         public GestaoCategorias()
         {
             InitializeComponent();
-            _controller = new CategoriaController(); // Inicializar o controller
+            _controller = new CategoriaController();
         }
 
         private void GestaoCategorias_Load_1(object sender, EventArgs e)
@@ -30,17 +30,26 @@ namespace IShopping.View
 
         private void CarregarCategorias()
         {
-            dgvCategorias.DataSource = null;
-            // A View pede os dados ao Controller!
-            dgvCategorias.DataSource = _controller.ObterCategorias();
+            lstCategorias.DataSource = null;
+            lstCategorias.DataSource = _controller.ObterCategorias();
+            lstCategorias.DisplayMember = "Categoria";
+            lstCategorias.ValueMember = "Id";
+
+            // Adiciona esta linha para não selecionar a primeira categoria:
+            lstCategorias.ClearSelected();
         }
 
-        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
+        // NOVO EVENTO: Substitui o CellClick
+        private void lstCategorias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (lstCategorias.SelectedItem != null && lstCategorias.SelectedValue is int)
             {
-                idCategoriaSelecionada = (int)dgvCategorias.Rows[e.RowIndex].Cells["Id"].Value;
-                txtNameCategoria.Text = dgvCategorias.Rows[e.RowIndex].Cells["Categoria"].Value.ToString();
+                // Guarda o ID
+                idCategoriaSelecionada = (int)lstCategorias.SelectedValue;
+
+                // Converte o item selecionado de volta para "TipoArtigo" para ler o nome
+                var tipoSelecionado = (TipoArtigo)lstCategorias.SelectedItem;
+                txtNameCategoria.Text = tipoSelecionado.Categoria;
             }
         }
 
@@ -48,7 +57,7 @@ namespace IShopping.View
         {
             if (string.IsNullOrWhiteSpace(txtNameCategoria.Text)) return;
 
-            _controller.AdicionarCategoria(txtNameCategoria.Text); // Delega para o Controller
+            _controller.AdicionarCategoria(txtNameCategoria.Text);
 
             LimparFormulario();
             CarregarCategorias();
@@ -78,7 +87,8 @@ namespace IShopping.View
         {
             txtNameCategoria.Clear();
             idCategoriaSelecionada = 0;
+            lstCategorias.ClearSelected(); // Tira a seleção visual da lista
         }
 
-    }   
+    }
 }

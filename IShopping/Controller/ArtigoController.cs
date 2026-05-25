@@ -10,24 +10,41 @@ namespace IShopping.Controller
 {
     public class ArtigoController
     {
-        
-        public object ObterArtigosParaGrelha(int idTipoFiltro)
+        // Alterado para servir a ListBox
+        public object ObterArtigosParaLista(int idTipoFiltro, string termoPesquisa = "")
         {
             using (var db = new ShoppingContext())
             {
                 var query = db.artigos.Include(a => a.TipoArtigo).AsQueryable();
 
+                // 1. Filtro pela ComboBox (Categoria)
                 if (idTipoFiltro > 0)
                 {
                     query = query.Where(a => a.TipoArtigoId == idTipoFiltro);
                 }
 
+                // 2. NOVO: Filtro pela TextBox (Texto Parcial)
+                // Só filtra se a caixa de texto não estiver vazia
+                if (!string.IsNullOrWhiteSpace(termoPesquisa))
+                {
+                    // O .Contains() encontra artigos que tenham aquele texto em qualquer parte do nome
+                    query = query.Where(a => a.Nome.Contains(termoPesquisa));
+                }
+
                 return query.Select(a => new
                 {
                     a.Id,
-                    a.Nome,
-                    Categoria = a.TipoArtigo.Categoria
+                    DisplayText = a.Nome + " (" + a.TipoArtigo.Categoria + ")"
                 }).ToList();
+            }
+        }
+
+        // NOVO: Para nos ajudar a ler os dados para as caixas de texto ao clicar na lista
+        public Artigo ObterArtigoPorId(int id)
+        {
+            using (var db = new ShoppingContext())
+            {
+                return db.artigos.FirstOrDefault(a => a.Id == id);
             }
         }
 
