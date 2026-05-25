@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IShopping.Controller;
+using System;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -98,6 +99,29 @@ namespace IShopping.View
             {
                 formDestino.ShowDialog();
                 AtualizarListaComprasAbertas(); // Atualiza a lista caso algo tenha mudado
+            }
+        }
+
+        private void exportaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "Selecione a pasta onde deseja guardar a exportação CSV:";
+                folderDialog.ShowNewFolderButton = true;
+
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {                        
+                        string caminhoFicheiro = new ExportarCsvController().CriarFicheiro(folderDialog.SelectedPath.ToString(), _utilizadorId);
+
+                        MessageBox.Show($"Exportação realizada com sucesso!\n\nFicheiro gerado em:\n{caminhoFicheiro}","Sucesso na Exportação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ocorreu um erro ao exportar os dados:\n{ex.Message}","Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }
