@@ -91,6 +91,7 @@
             this.btnAddCategoria.TabIndex = 34;
             this.btnAddCategoria.Text = "Adicionar";
             this.btnAddCategoria.UseVisualStyleBackColor = true;
+            this.btnAddCategoria.Click += new System.EventHandler(this.btnAddCategoria_Click);
             // 
             // btnDeleteCategoria
             // 
@@ -100,6 +101,7 @@
             this.btnDeleteCategoria.TabIndex = 33;
             this.btnDeleteCategoria.Text = "Eliminar";
             this.btnDeleteCategoria.UseVisualStyleBackColor = true;
+            this.btnDeleteCategoria.Click += new System.EventHandler(this.btnDeleteCategoria_Click);
             // 
             // btnEditCategoria
             // 
@@ -109,6 +111,7 @@
             this.btnEditCategoria.TabIndex = 32;
             this.btnEditCategoria.Text = "Guardar alterações";
             this.btnEditCategoria.UseVisualStyleBackColor = true;
+            this.btnEditCategoria.Click += new System.EventHandler(this.btnEditCategoria_Click);
             // 
             // GestaoCategorias
             // 
