@@ -13,9 +13,8 @@ namespace IShopping.Controller
         {
             using (var db = new ShoppingContext())
             {
-                bool existe = db.users.Any(u => u.username == username && u.password == pass);
-
-                return existe ? 1 : 0;
+                var utilizador = db.users.FirstOrDefault(u => u.username == username && u.password == pass);
+                return utilizador != null ? utilizador.id : -1;
             }
         }
 

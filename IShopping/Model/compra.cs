@@ -11,17 +11,22 @@ namespace IShopping.Model
     public enum Estado { aberto = 1, fechado = 2, padrao = 0 }
     public class Compra
     {
+        [Key]
         public int id { get; set; }
 
         [StringLength(150), Required]
         public string nome { get; set; }
 
-        [EnumDataType(typeof(Estado)), Required]
+        [Required]
         public Estado estado { get; set; }
 
         public DateTime dataCriacao { get; set; } = DateTime.Now;
-        public DateTime DataAlteracao { get; set; }
-        public DateTime dataFechar { get; set; }
+        public DateTime DataAlteracao { get; set; } = DateTime.Now;
+        public DateTime? dataFechar { get; set; }
+
+        // Relacionamentos por objeto direto
+        public user userCriador { get; set; }
+        public user userFechou { get; set; }
 
         public List<itemCompra> listaCompra { get; set; } = new List<itemCompra>();
     }
