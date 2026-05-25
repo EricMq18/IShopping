@@ -46,6 +46,7 @@ namespace IShopping.View
             this.dgvComprasAbertas = new System.Windows.Forms.DataGridView();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.btnAbrirModoCompra = new System.Windows.Forms.Button();
+            this.exportaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipal.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvComprasAbertas)).BeginInit();
@@ -53,13 +54,14 @@ namespace IShopping.View
             // 
             // menuPrincipal
             // 
+            this.menuPrincipal.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuPrincipal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuGestao,
             this.menuCompras,
             this.itemEstatisticas});
             this.menuPrincipal.Location = new System.Drawing.Point(0, 0);
             this.menuPrincipal.Name = "menuPrincipal";
-            this.menuPrincipal.Size = new System.Drawing.Size(800, 24);
+            this.menuPrincipal.Size = new System.Drawing.Size(800, 28);
             this.menuPrincipal.TabIndex = 4;
             // 
             // menuGestao
@@ -70,31 +72,33 @@ namespace IShopping.View
             this.itemArtigos,
             this.itemOrcamentos});
             this.menuGestao.Name = "menuGestao";
-            this.menuGestao.Size = new System.Drawing.Size(55, 20);
+            this.menuGestao.Size = new System.Drawing.Size(69, 24);
             this.menuGestao.Text = "Gestão";
             // 
             // itemUtilizadores
             // 
+            this.itemUtilizadores.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportaToolStripMenuItem});
             this.itemUtilizadores.Name = "itemUtilizadores";
-            this.itemUtilizadores.Size = new System.Drawing.Size(180, 22);
+            this.itemUtilizadores.Size = new System.Drawing.Size(224, 26);
             this.itemUtilizadores.Text = "Utilizadores";
             // 
             // itemTiposArtigo
             // 
             this.itemTiposArtigo.Name = "itemTiposArtigo";
-            this.itemTiposArtigo.Size = new System.Drawing.Size(180, 22);
+            this.itemTiposArtigo.Size = new System.Drawing.Size(224, 26);
             this.itemTiposArtigo.Text = "Tipos de Artigo";
             // 
             // itemArtigos
             // 
             this.itemArtigos.Name = "itemArtigos";
-            this.itemArtigos.Size = new System.Drawing.Size(180, 22);
+            this.itemArtigos.Size = new System.Drawing.Size(224, 26);
             this.itemArtigos.Text = "Artigos";
             // 
             // itemOrcamentos
             // 
             this.itemOrcamentos.Name = "itemOrcamentos";
-            this.itemOrcamentos.Size = new System.Drawing.Size(180, 22);
+            this.itemOrcamentos.Size = new System.Drawing.Size(224, 26);
             this.itemOrcamentos.Text = "Orçamentos";
             // 
             // menuCompras
@@ -102,42 +106,45 @@ namespace IShopping.View
             this.menuCompras.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itemPlaneamento});
             this.menuCompras.Name = "menuCompras";
-            this.menuCompras.Size = new System.Drawing.Size(67, 20);
+            this.menuCompras.Size = new System.Drawing.Size(82, 24);
             this.menuCompras.Text = "Compras";
             // 
             // itemPlaneamento
             // 
             this.itemPlaneamento.Name = "itemPlaneamento";
-            this.itemPlaneamento.Size = new System.Drawing.Size(211, 22);
+            this.itemPlaneamento.Size = new System.Drawing.Size(263, 26);
             this.itemPlaneamento.Text = "Planeamento de Compras";
             // 
             // itemEstatisticas
             // 
             this.itemEstatisticas.Name = "itemEstatisticas";
-            this.itemEstatisticas.Size = new System.Drawing.Size(76, 20);
+            this.itemEstatisticas.Size = new System.Drawing.Size(95, 24);
             this.itemEstatisticas.Text = "Estatísticas";
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblUsuarioLogado});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 438);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 434);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(800, 26);
             this.statusStrip1.TabIndex = 3;
             // 
             // lblUsuarioLogado
             // 
             this.lblUsuarioLogado.Name = "lblUsuarioLogado";
-            this.lblUsuarioLogado.Size = new System.Drawing.Size(78, 17);
+            this.lblUsuarioLogado.Size = new System.Drawing.Size(99, 20);
             this.lblUsuarioLogado.Text = "Utilizador: ---";
             // 
             // dgvComprasAbertas
             // 
             this.dgvComprasAbertas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvComprasAbertas.ColumnHeadersHeight = 29;
             this.dgvComprasAbertas.Location = new System.Drawing.Point(12, 80);
             this.dgvComprasAbertas.Name = "dgvComprasAbertas";
             this.dgvComprasAbertas.ReadOnly = true;
+            this.dgvComprasAbertas.RowHeadersWidth = 51;
             this.dgvComprasAbertas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvComprasAbertas.Size = new System.Drawing.Size(776, 300);
             this.dgvComprasAbertas.TabIndex = 2;
@@ -162,6 +169,13 @@ namespace IShopping.View
             this.btnAbrirModoCompra.Text = "Entrar no Modo Compra";
             this.btnAbrirModoCompra.UseVisualStyleBackColor = false;
             // 
+            // exportaToolStripMenuItem
+            // 
+            this.exportaToolStripMenuItem.Name = "exportaToolStripMenuItem";
+            this.exportaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportaToolStripMenuItem.Text = "Exportar Compras";
+            this.exportaToolStripMenuItem.Click += new System.EventHandler(this.exportaToolStripMenuItem_Click);
+            // 
             // FormPrincipal
             // 
             this.ClientSize = new System.Drawing.Size(800, 460);
@@ -182,5 +196,7 @@ namespace IShopping.View
             this.PerformLayout();
 
         }
+
+        private ToolStripMenuItem exportaToolStripMenuItem;
     }
 }

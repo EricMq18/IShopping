@@ -29,7 +29,7 @@ namespace IShopping.Controller
                 dataCriacao = DateTime.Now,
                 DataAlteracao = DateTime.Now,
                 userCriador = user
-            };            
+            };                      
             context.compras.Add(compraAberta);
 
             var item = new itemCompra
@@ -42,7 +42,7 @@ namespace IShopping.Controller
                 IsPrevisto = true,
                 userCriador = user,
                 userAlterador = user
-            };
+            };                       
             context.itemCompras.Add(item);
 
             var orcamento = new orcamento
