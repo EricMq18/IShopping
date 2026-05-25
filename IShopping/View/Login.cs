@@ -22,22 +22,34 @@ namespace IShopping.View
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            int passar = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
+            int userId = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
 
-            if(passar == 1)
+            if (userId != -1)
             {
-                Program.forms(this, new FormPrincipal());
+                // Define a sessão global antes de abrir o painel principal
+                Program.UtilizadorLogadoId = userId;
+                Program.UtilizadorLogadoNome = txtUser.Text;
+
+                Program.forms(this, new FormPrincipal(userId, txtUser.Text));
+            }
+            else
+            {
+                MessageBox.Show("Credenciais inválidas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnRegistar_Click(object sender, EventArgs e)
         {
-            int passar = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
+            int userId = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
 
-            if (passar == 0)
+            if (userId == -1)
             {
                 new UserController().registarUser(txtUser.Text, txtPass.Text);
-                MessageBox.Show("Registo Efetuado com sucesso");                
+                MessageBox.Show("Registo Efetuado com sucesso");
+            }
+            else
+            {
+                MessageBox.Show("Credenciais inválidas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -13,18 +13,48 @@ namespace IShopping.Controller
     {
         protected override void Seed(ShoppingContext context)
         {
-            // NÃO use 'using (var db = context)'. Use o 'context' que vem no parâmetro.
-            var userAdmin = new user { username = "admin", password = "admin" };
-            context.users.Add(userAdmin);
+            var user = new user { username = "admin", password = "admin" };
+            context.users.Add(user);
 
             var categoriaComida = new TipoArtigo { Categoria = "Comida" };
             context.tipos.Add(categoriaComida);
 
-            var Compra = new Compra { DataAlteracao = DateTime.Now, dataCriacao = DateTime.Now, dataFechar = DateTime.Now, estado = Estado.fechado, nome = "Teste" };
-            var itemCompra = new itemCompra { compra = Compra, CompraID = Compra.id, precoUnitario = 0, quantidadeAdquirida = 0 };
+            var artigoTeste = new Artigo { Nome = "Arroz", TipoArtigo = categoriaComida };
+            context.artigos.Add(artigoTeste);
+
+            var compraAberta = new Compra
+            {
+                nome = "Compras Mensais Continente",
+                estado = Estado.aberto,
+                dataCriacao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                userCriador = user
+            };            
+            context.compras.Add(compraAberta);
+
+            var item = new itemCompra
+            {
+                compra = compraAberta,   
+                artigo = artigoTeste,    
+                quantidadePrevista = 4,
+                quantidadeAdquirida = 0,
+                precoUnitario = 1.10m,
+                IsPrevisto = true,
+                userCriador = user,
+                userAlterador = user
+            };
+            context.itemCompras.Add(item);
+
+            var orcamento = new orcamento
+            {
+                mes = DateTime.Now,
+                userCriador = user,
+                valor_max = 1.1m
+            };
+            context.orcamentos.Add(orcamento);
+
             context.SaveChanges();
 
-            // O base.Seed deve ser chamado, mas geralmente é a última coisa
             base.Seed(context);
         }
 

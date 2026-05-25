@@ -14,7 +14,7 @@ namespace IShopping.Model
 
         [StringLength(150)]
         public string Nome { get; set; }
-        public int TipoArtigoId {  get; set; }
+        public int TipoArtigoId { get; set; }
         public TipoArtigo TipoArtigo { get; set; }
     }
 }

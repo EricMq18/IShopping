@@ -59,6 +59,7 @@
     <Compile Include="Controller\AppDbInitializer.cs" />
     <Compile Include="Controller\ArtigoController.cs" />
     <Compile Include="Controller\CategoriaController.cs" />
+    <Compile Include="Controller\ExportarCsvController.cs" />
     <Compile Include="Controller\RegisterController.cs" />
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Artigo.cs" />

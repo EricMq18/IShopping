@@ -9,10 +9,10 @@ namespace IShopping.Model
 {    
     public class TipoArtigo
     {
-        [Key]   
+        [Key]
         public int Id { get; set; }
 
         [StringLength(150), Required]
-        public string Categoria { get; set; }        
+        public string Categoria { get; set; }
     }
 }
