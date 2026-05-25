@@ -21,9 +21,9 @@ namespace IShopping
         static void Main()
         {
             Database.SetInitializer(new AppDbInitializer());
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Login());           
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new GestaoArtigos());
         }
 
         public static void forms(Form formAtual, Form formNovo)
