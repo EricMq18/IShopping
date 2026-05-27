@@ -112,6 +112,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\FormCompra.resx">
+      <DependentUpon>FormCompra.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\GestaoArtigos.resx">
       <DependentUpon>GestaoArtigos.cs</DependentUpon>
     </EmbeddedResource>
