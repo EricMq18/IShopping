@@ -3,7 +3,7 @@
 ### Grupo:
 Eric Marques `2025185438`\
 Martim Duarte Borges `2025187810`\
-Dinis Dos Reis Gonçalves `2025135981`\
+Dinis Dos Reis Gonçalves `2025135981`
 -------------------
 
 Desenvolvimento de Aplicações
