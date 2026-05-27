@@ -29,8 +29,18 @@ namespace IShopping.Controller
                 dataCriacao = DateTime.Now,
                 DataAlteracao = DateTime.Now,
                 userCriador = user
-            };                      
+            };               
             context.compras.Add(compraAberta);
+
+            var compraFechada = new Compra
+            {
+                nome = "Compras Mensais FECHADO Continente",
+                estado = Estado.fechado,
+                dataCriacao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                userCriador = user
+            };
+            context.compras.Add(compraFechada);
 
             var item = new itemCompra
             {

@@ -32,9 +32,17 @@ namespace IShopping.Controller
 
             var linhas = new List<String>();
 
+            ;
+
             using (var db = new ShoppingContext())
             {
-                foreach(var compras in db.compras)
+
+                var comprasFechadas = db.compras
+                    .Include(c => c.listaCompra.Select(i => i.artigo))
+                    .Where(c => c.estado == Estado.fechado && c.userCriador.id == UserID)
+                    .ToList();
+
+                foreach (var compras in comprasFechadas)
                 {                    
                     foreach(var item in compras.listaCompra)
                     {
