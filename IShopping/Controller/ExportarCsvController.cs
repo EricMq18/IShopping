@@ -60,7 +60,7 @@ namespace IShopping.Controller
                         string precoUnitario = item.precoUnitario.ToString("F2");
                         
                         string linha = $"{nomeCompra};{dataCriacao};{dataFechada};{nomeArtigo};{artigoPrevisto};{artigoNaoPrevisto};{quantidadePrevista};{quantidadeAdquirida};{precoUnitario}";
-                        linhas.Add(nomeCompra);
+                        linhas.Add(linha);
                     }                    
                 }
                 File.WriteAllLines(caminho, linhas, Encoding.UTF8);
