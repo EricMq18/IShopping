@@ -71,6 +71,18 @@
     <Compile Include="Model\ShoppingContext.cs" />
     <Compile Include="Model\TipoArtigo.cs" />
     <Compile Include="Model\user.cs" />
+    <Compile Include="View\FormCriacaoCompra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FormCriacaoCompra.Designer.cs">
+      <DependentUpon>FormCriacaoCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FormPlaneamentoCompras.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FormPlaneamentoCompras.Designer.cs">
+      <DependentUpon>FormPlaneamentoCompras.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\GestaoCategorias.cs">
       <SubType>Form</SubType>
     </Compile>

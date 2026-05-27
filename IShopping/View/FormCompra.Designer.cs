@@ -6,21 +6,15 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        // Declaração de todos os controlos necessários
         private System.Windows.Forms.Label lblNomeCompra;
         private System.Windows.Forms.Label lblOrcamentoDisponivel;
         private System.Windows.Forms.DataGridView dgvItensCompra;
-
-        // Grupo para registar dados de itens planeados
         private System.Windows.Forms.GroupBox grpRegistarItem;
         private System.Windows.Forms.Label lblQtdAdquirida;
         private System.Windows.Forms.NumericUpDown numQtdAdquirida;
         private System.Windows.Forms.Label lblPrecoUnitario;
         private System.Windows.Forms.TextBox txtPrecoUnitario;
         private System.Windows.Forms.Button btnRegistarItem;
-
-        // Grupo para adicionar itens não previstos (impulsos)
         private System.Windows.Forms.GroupBox grpAdicionarExtra;
         private System.Windows.Forms.Label lblTipoArtigoExtra;
         private System.Windows.Forms.ComboBox cmbTipoArtigoExtra;
@@ -191,7 +185,7 @@
             this.grpAdicionarExtra.Size = new System.Drawing.Size(405, 205);
             this.grpAdicionarExtra.TabIndex = 1;
             this.grpAdicionarExtra.TabStop = false;
-            this.grpAdicionarExtra.Text = "Adicionar Artigo Não Previsto (Impulso)";
+            this.grpAdicionarExtra.Text = "Adicionar Artigo Não Previsto";
             // 
             // btnAdicionarExtra
             // 
@@ -199,7 +193,7 @@
             this.btnAdicionarExtra.Name = "btnAdicionarExtra";
             this.btnAdicionarExtra.Size = new System.Drawing.Size(290, 35);
             this.btnAdicionarExtra.TabIndex = 0;
-            this.btnAdicionarExtra.Text = "Inserir Artigo por Impulso";
+            this.btnAdicionarExtra.Text = "Inserir Artigo Não Previsto";
             this.btnAdicionarExtra.UseVisualStyleBackColor = true;
             // 
             // txtObservacoes

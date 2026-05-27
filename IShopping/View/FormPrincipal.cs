@@ -20,16 +20,12 @@ namespace IShopping.View
             _utilizadorId = utilizadorId;
             lblUsuarioLogado.Text = $"Utilizador: {nomeUsuario}";
 
-            this.Load += FormPrincipal_Load;
-
             // Subscrição de Eventos
-            itemUtilizadores.Click += (s, e) => AbrirFormulario("Utilizadores");
             itemArtigos.Click += (s, e) => AbrirFormulario("Artigos");
             itemTiposArtigo.Click += (s, e) => AbrirFormulario("TiposArtigo");
             itemOrcamentos.Click += (s, e) => AbrirFormulario("Orcamentos");
             itemPlaneamento.Click += (s, e) => AbrirFormulario("Planeamento");
             itemEstatisticas.Click += (s, e) => AbrirFormulario("Estatisticas");
-            btnAbrirModoCompra.Click += btnAbrirModoCompra_Click;
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -96,8 +92,7 @@ namespace IShopping.View
                     break;
 
                 case "Planeamento":
-                    // Ainda não tens o formulário de Planeamento criado.
-                    // formDestino = new FormPlaneamento(); 
+                    formDestino = new FormPlaneamentoCompras(_utilizadorId); 
                     break;
 
                 case "ModoCompra":
