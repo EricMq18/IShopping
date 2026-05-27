@@ -10,8 +10,8 @@ Desenvolvimento de Aplicações
 
 # Dados de Acessos definidos por padrão
 
-Username: Admin
-Password: admin
+Username: Admin\
+Password: admin\
 Observação: Pode ser registada outros login
 
 # Descrição do Projeto
