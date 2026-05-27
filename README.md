@@ -8,10 +8,11 @@ Dinis Dos Reis Gonçalves `2025135981`
 
 Desenvolvimento de Aplicações
 
-#Dados de Acessos definidos por padrão
+# Dados de Acessos definidos por padrão
 
 Username: Admin
 Password: admin
+Observação: Pode ser registada outros login
 
 # Descrição do Projeto
 
