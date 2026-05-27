@@ -11,7 +11,11 @@ namespace IShopping.Model
     {
         [Key]
         public int id { get; set; }
+
+        [Required]
         public DateTime mes { get; set; }
+
+        [Required]
         public decimal valor_max { get; set; }        
         public user userCriador { get; set; }
         public user userAlterador { get; set; }

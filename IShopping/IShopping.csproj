@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Controller\AppDbInitializer.cs" />
     <Compile Include="Controller\ExportarCsvController.cs" />
+    <Compile Include="Controller\OrcamentoController.cs" />
     <Compile Include="Controller\RegisterController.cs" />
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Artigo.cs" />
@@ -95,6 +96,12 @@
     <Compile Include="View\GestaoArtigos.Designer.cs">
       <DependentUpon>GestaoArtigos.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\GestaoOrcamento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\GestaoOrcamento.Designer.cs">
+      <DependentUpon>GestaoOrcamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\GestaoOrcamento.resx">
+      <DependentUpon>GestaoOrcamento.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
