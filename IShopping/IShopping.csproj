@@ -148,6 +148,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\GestaoOrcamento.resx">
       <DependentUpon>GestaoOrcamento.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
