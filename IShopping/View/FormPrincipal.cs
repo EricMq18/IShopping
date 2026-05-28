@@ -20,7 +20,9 @@ namespace IShopping.View
             _utilizadorId = utilizadorId;
             lblUsuarioLogado.Text = $"Utilizador: {nomeUsuario}";
 
-            // Subscrição de Eventos
+            this.Load += FormPrincipal_Load;
+
+            // Eventos
             itemArtigos.Click += (s, e) => AbrirFormulario("Artigos");
             itemTiposArtigo.Click += (s, e) => AbrirFormulario("TiposArtigo");
             itemOrcamentos.Click += (s, e) => AbrirFormulario("Orcamentos");
@@ -37,21 +39,8 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new IShopping.Model.ShoppingContext())
-                {
-                    // Vai à base de dados buscar apenas as compras que estão em aberto
-                    var comprasAbertas = context.compras
-                        .Where(c => c.estado == IShopping.Model.Estado.aberto)
-                        .Select(c => new
-                        {
-                            id = c.id, // O id minúsculo é fundamental para o botão ModoCompra conseguir ler
-                            Nome = c.nome,
-                            DataCriacao = c.dataCriacao,
-                            Criador = c.userCriador != null ? c.userCriador.username : "Desconhecido"
-                        }).ToList();
-
-                    dgvComprasAbertas.DataSource = comprasAbertas;
-                }
+                var controller = new IShopping.Controller.CompraController();
+                dgvComprasAbertas.DataSource = controller.ObterComprasAbertas();
             }
             catch (Exception ex)
             {
@@ -63,7 +52,6 @@ namespace IShopping.View
         {
             if (dgvComprasAbertas.CurrentRow != null)
             {
-                // Abrir o Formulário do modo Compra (item h do enunciado) 
                 AbrirFormulario("ModoCompra");
             }
             else
@@ -113,7 +101,7 @@ namespace IShopping.View
             if (formDestino != null)
             {
                 formDestino.ShowDialog();
-                AtualizarListaComprasAbertas(); // Atualiza a lista caso algo tenha mudado
+                AtualizarListaComprasAbertas();
             }
         }
 

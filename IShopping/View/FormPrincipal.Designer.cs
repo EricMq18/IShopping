@@ -78,7 +78,7 @@ namespace IShopping.View
             this.itemUtilizadores.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportaToolStripMenuItem});
             this.itemUtilizadores.Name = "itemUtilizadores";
-            this.itemUtilizadores.Size = new System.Drawing.Size(180, 22);
+            this.itemUtilizadores.Size = new System.Drawing.Size(155, 22);
             this.itemUtilizadores.Text = "Utilizadores";
             // 
             // exportaToolStripMenuItem
@@ -91,19 +91,19 @@ namespace IShopping.View
             // itemTiposArtigo
             // 
             this.itemTiposArtigo.Name = "itemTiposArtigo";
-            this.itemTiposArtigo.Size = new System.Drawing.Size(180, 22);
+            this.itemTiposArtigo.Size = new System.Drawing.Size(155, 22);
             this.itemTiposArtigo.Text = "Tipos de Artigo";
             // 
             // itemArtigos
             // 
             this.itemArtigos.Name = "itemArtigos";
-            this.itemArtigos.Size = new System.Drawing.Size(180, 22);
+            this.itemArtigos.Size = new System.Drawing.Size(155, 22);
             this.itemArtigos.Text = "Artigos";
             // 
             // itemOrcamentos
             // 
             this.itemOrcamentos.Name = "itemOrcamentos";
-            this.itemOrcamentos.Size = new System.Drawing.Size(180, 22);
+            this.itemOrcamentos.Size = new System.Drawing.Size(155, 22);
             this.itemOrcamentos.Text = "Orçamentos";
             // 
             // menuCompras
@@ -173,6 +173,7 @@ namespace IShopping.View
             this.btnAbrirModoCompra.TabIndex = 0;
             this.btnAbrirModoCompra.Text = "Entrar no Modo Compra";
             this.btnAbrirModoCompra.UseVisualStyleBackColor = false;
+            this.btnAbrirModoCompra.Click += new System.EventHandler(this.btnAbrirModoCompra_Click);
             // 
             // FormPrincipal
             // 

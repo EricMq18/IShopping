@@ -1,7 +1,5 @@
-﻿using IShopping.Model;
+﻿using IShopping.Controller;
 using System;
-using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -9,11 +7,13 @@ namespace IShopping.View
     public partial class FormPlaneamentoCompras : Form
     {
         private int _utilizadorId;
+        private PlaneamentoController _controller; // Instância do novo controller
 
         public FormPlaneamentoCompras(int utilizadorId)
         {
             InitializeComponent();
             _utilizadorId = utilizadorId;
+            _controller = new PlaneamentoController();
         }
 
         private void FormPlaneamentoCompras_Load(object sender, EventArgs e)
@@ -35,36 +35,9 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    var query = context.compras.Include("userCriador").AsQueryable();
+                string filtro = cmbFiltroEstado.SelectedItem != null ? cmbFiltroEstado.SelectedItem.ToString() : "Todas";
 
-                    if (cmbFiltroEstado.SelectedItem != null)
-                    {
-                        string filtro = cmbFiltroEstado.SelectedItem.ToString();
-
-                        if (filtro == "Abertas")
-                        {
-                            query = query.Where(c => c.estado == Estado.aberto);
-                        }
-                        else if (filtro == "Fechadas")
-                        {
-                            query = query.Where(c => c.estado == Estado.fechado);
-                        }
-                    }
-
-                    var listaCompras = query.Select(c => new
-                    {
-                        ID = c.id,
-                        Nome = c.nome,
-                        Estado = c.estado.ToString(),
-                        Data_Criacao = c.dataCriacao,
-                        Data_Alteracao = c.DataAlteracao, // <-- A tua nova coluna aqui!
-                        Criador = c.userCriador != null ? c.userCriador.username : "Desconhecido"
-                    }).ToList();
-
-                    dgvCompras.DataSource = listaCompras;
-                }
+                dgvCompras.DataSource = _controller.ObterListaCompras(filtro);
             }
             catch (Exception ex)
             {

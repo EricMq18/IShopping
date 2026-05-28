@@ -136,6 +136,7 @@
             this.btnRegistarItem.TabIndex = 0;
             this.btnRegistarItem.Text = "Atualizar Item no Carrinho";
             this.btnRegistarItem.UseVisualStyleBackColor = true;
+            this.btnRegistarItem.Click += new System.EventHandler(this.BtnRegistarItem_Click);
             // 
             // txtPrecoUnitario
             // 
@@ -195,6 +196,7 @@
             this.btnAdicionarExtra.TabIndex = 0;
             this.btnAdicionarExtra.Text = "Inserir Artigo Não Previsto";
             this.btnAdicionarExtra.UseVisualStyleBackColor = true;
+            this.btnAdicionarExtra.Click += new System.EventHandler(this.BtnAdicionarExtra_Click);
             // 
             // txtObservacoes
             // 
@@ -274,6 +276,7 @@
             this.cmbTipoArtigoExtra.Name = "cmbTipoArtigoExtra";
             this.cmbTipoArtigoExtra.Size = new System.Drawing.Size(290, 21);
             this.cmbTipoArtigoExtra.TabIndex = 9;
+            this.cmbTipoArtigoExtra.SelectedIndexChanged += new System.EventHandler(this.CmbTipoArtigoExtra_SelectedIndexChanged);
             // 
             // lblTipoArtigoExtra
             // 
@@ -294,6 +297,7 @@
             this.btnFecharCompra.TabIndex = 0;
             this.btnFecharCompra.Text = "Concluir / Fechar Compra";
             this.btnFecharCompra.UseVisualStyleBackColor = false;
+            this.btnFecharCompra.Click += new System.EventHandler(this.BtnFecharCompra_Click);
             // 
             // FormCompra
             // 

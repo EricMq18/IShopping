@@ -1,9 +1,7 @@
-﻿using IShopping.Model;
+﻿using IShopping.Controller;
+using IShopping.Model; // Necessário apenas para o Enum Estado
 using System;
-using System.Data;
-using System.Linq;
 using System.Windows.Forms;
-using System.Data.Entity;
 
 namespace IShopping.View
 {
@@ -12,23 +10,24 @@ namespace IShopping.View
         private int _utilizadorId;
         private int _compraId;
         private bool _modoLeitura;
+        private CriacaoCompraController _controller; // O Cérebro
 
-        // Construtor 1 para nova compra
         public FormCriacaoCompra(int utilizadorId)
         {
             InitializeComponent();
             _utilizadorId = utilizadorId;
-            _compraId = 0; // 0 significa que ainda não foi guardada na Base de Dados
+            _compraId = 0;
             _modoLeitura = false;
+            _controller = new CriacaoCompraController();
         }
 
-        // Construtor 2 para editar compra existente
         public FormCriacaoCompra(int utilizadorId, int compraId)
         {
             InitializeComponent();
             _utilizadorId = utilizadorId;
             _compraId = compraId;
             _modoLeitura = false;
+            _controller = new CriacaoCompraController();
         }
 
         private void FormCriacaoCompra_Load(object sender, EventArgs e)
@@ -49,16 +48,13 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    cmbTipoArtigo.DataSource = context.tipos.ToList();
-                    cmbTipoArtigo.DisplayMember = "Categoria";
-                    cmbTipoArtigo.ValueMember = "Id";
-                }
+                cmbTipoArtigo.DataSource = _controller.ObterCategorias();
+                cmbTipoArtigo.DisplayMember = "Categoria";
+                cmbTipoArtigo.ValueMember = "Id";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}");
             }
         }
 
@@ -68,21 +64,9 @@ namespace IShopping.View
             {
                 try
                 {
-                    using (var context = new ShoppingContext())
-                    {
-                        var artigosFiltrados = context.artigos.Where(a => a.TipoArtigoId == tipoId).ToList();
-
-                        if (artigosFiltrados.Count > 0)
-                        {
-                            cmbArtigo.DataSource = artigosFiltrados;
-                            cmbArtigo.DisplayMember = "Nome";
-                            cmbArtigo.ValueMember = "Id";
-                        }
-                        else
-                        {
-                            cmbArtigo.DataSource = null;
-                        }
-                    }
+                    cmbArtigo.DataSource = _controller.ObterArtigosPorCategoria(tipoId);
+                    cmbArtigo.DisplayMember = "Nome";
+                    cmbArtigo.ValueMember = "Id";
                 }
                 catch (Exception) { }
             }
@@ -90,14 +74,14 @@ namespace IShopping.View
 
         private void CarregarDadosCompra()
         {
-            using (var context = new ShoppingContext())
+            try
             {
-                var compra = context.compras.Find(_compraId);
-                if (compra != null)
+                var cabecalho = _controller.ObterCabecalhoCompra(_compraId);
+                if (cabecalho != null)
                 {
-                    txtNomeCompra.Text = compra.nome;
+                    txtNomeCompra.Text = cabecalho.Nome;
 
-                    if (compra.estado == Estado.fechado)
+                    if (cabecalho.EstadoCompra == Estado.fechado)
                     {
                         _modoLeitura = true;
                         DesativarControlosParaLeitura();
@@ -105,6 +89,10 @@ namespace IShopping.View
 
                     AtualizarGrelhaItens();
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar dados: {ex.Message}");
             }
         }
 
@@ -116,6 +104,7 @@ namespace IShopping.View
             numQuantidadePrevista.Enabled = false;
             btnAdicionarItem.Enabled = false;
             btnRemoverItem.Enabled = false;
+            btnAtualizarItem.Enabled = false;
             btnGuardarCompra.Enabled = false;
             this.Text += " (Modo Leitura - Fechada)";
         }
@@ -136,53 +125,10 @@ namespace IShopping.View
 
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    Compra compraAtual;
+                int artigoId = (int)cmbArtigo.SelectedValue;
 
-                    // Se a lista ainda não existe, cria-a silenciosamente primeiro
-                    if (_compraId == 0)
-                    {
-                        var utilizadorAtual = context.users.Find(_utilizadorId);
-                        compraAtual = new Compra
-                        {
-                            nome = txtNomeCompra.Text.Trim(),
-                            estado = Estado.aberto,
-                            dataCriacao = DateTime.Now,
-                            DataAlteracao = DateTime.Now,
-                            userCriador = utilizadorAtual
-                        };
-
-                        context.compras.Add(compraAtual);
-                        context.SaveChanges();
-                        _compraId = compraAtual.id;
-                    }
-                    else
-                    {
-                        compraAtual = context.compras.Find(_compraId);
-                    }
-
-                    int artigoId = (int)cmbArtigo.SelectedValue;
-                    var artigoSelecionado = context.artigos.Find(artigoId);
-                    var utilizadorAcao = context.users.Find(_utilizadorId);
-
-                    var novoItem = new itemCompra
-                    {
-                        compra = compraAtual,
-                        artigo = artigoSelecionado,
-                        quantidadePrevista = (int)numQuantidadePrevista.Value,
-                        quantidadeAdquirida = 0,
-                        precoUnitario = 0,
-                        IsPrevisto = true,
-                        DataCriacao = DateTime.Now,
-                        DataAlteracao = DateTime.Now,
-                        userCriador = utilizadorAcao
-                    };
-
-                    context.itemCompras.Add(novoItem);
-                    if (compraAtual != null) compraAtual.DataAlteracao = DateTime.Now;
-                    context.SaveChanges();
-                }
+                // O controller encarrega-se de criar a compra na BD se ela não existir e devolve o ID
+                _compraId = _controller.AdicionarItem(_compraId, txtNomeCompra.Text.Trim(), artigoId, (int)numQuantidadePrevista.Value, _utilizadorId);
 
                 numQuantidadePrevista.Value = 1;
                 AtualizarGrelhaItens();
@@ -190,6 +136,56 @@ namespace IShopping.View
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao adicionar item: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DgvItensPlaneados_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvItensPlaneados.CurrentRow != null && !_modoLeitura)
+            {
+                try
+                {
+                    int itemId = (int)dgvItensPlaneados.CurrentRow.Cells["ID"].Value;
+                    var detalhes = _controller.ObterDetalhesItem(itemId);
+
+                    if (detalhes != null)
+                    {
+                        cmbTipoArtigo.SelectedValue = detalhes.TipoArtigoId;
+                        cmbArtigo.SelectedValue = detalhes.ArtigoId;
+                        numQuantidadePrevista.Value = detalhes.Quantidade;
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private void BtnAtualizarItem_Click(object sender, EventArgs e)
+        {
+            if (dgvItensPlaneados.CurrentRow == null)
+            {
+                MessageBox.Show("Selecione um artigo na tabela primeiro.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cmbArtigo.SelectedValue == null)
+            {
+                MessageBox.Show("Por favor, selecione um artigo válido.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                int itemId = (int)dgvItensPlaneados.CurrentRow.Cells["ID"].Value;
+                int novoArtigoId = (int)cmbArtigo.SelectedValue;
+
+                _controller.AtualizarItem(itemId, novoArtigoId, (int)numQuantidadePrevista.Value, _compraId);
+
+                AtualizarGrelhaItens();
+                MessageBox.Show("Artigo atualizado com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar item: {ex.Message}");
             }
         }
 
@@ -201,19 +197,8 @@ namespace IShopping.View
                 {
                     int itemId = (int)dgvItensPlaneados.CurrentRow.Cells["ID"].Value;
 
-                    using (var context = new ShoppingContext())
-                    {
-                        var itemParaRemover = context.itemCompras.Find(itemId);
-                        if (itemParaRemover != null)
-                        {
-                            context.itemCompras.Remove(itemParaRemover);
+                    _controller.RemoverItem(itemId, _compraId);
 
-                            var compra = context.compras.Find(_compraId);
-                            if (compra != null) compra.DataAlteracao = DateTime.Now;
-
-                            context.SaveChanges();
-                        }
-                    }
                     AtualizarGrelhaItens();
                 }
                 catch (Exception ex)
@@ -233,20 +218,7 @@ namespace IShopping.View
 
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    var itensPlaneados = context.itemCompras
-                                       .Include(i => i.artigo)
-                                       .Where(i => i.compra.id == _compraId && i.IsPrevisto == true)
-                                       .Select(i => new
-                                       {
-                                           ID = i.id,
-                                           Produto = i.artigo != null ? i.artigo.Nome : "Desconhecido",
-                                           Qtd_Prevista = i.quantidadePrevista
-                                       }).ToList();
-
-                    dgvItensPlaneados.DataSource = itensPlaneados;
-                }
+                dgvItensPlaneados.DataSource = _controller.ObterItensPlaneados(_compraId);
             }
             catch (Exception) { }
         }
@@ -261,33 +233,7 @@ namespace IShopping.View
 
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    if (_compraId == 0)
-                    {
-                        var utilizadorAtual = context.users.Find(_utilizadorId);
-                        var novaCompra = new Compra
-                        {
-                            nome = txtNomeCompra.Text.Trim(),
-                            estado = Estado.aberto,
-                            dataCriacao = DateTime.Now,
-                            DataAlteracao = DateTime.Now,
-                            userCriador = utilizadorAtual
-                        };
-                        context.compras.Add(novaCompra);
-                        context.SaveChanges();
-                    }
-                    else if (!_modoLeitura)
-                    {
-                        var compraExistente = context.compras.Find(_compraId);
-                        if (compraExistente != null)
-                        {
-                            compraExistente.nome = txtNomeCompra.Text.Trim();
-                            compraExistente.DataAlteracao = DateTime.Now;
-                            context.SaveChanges();
-                        }
-                    }
-                }
+                _controller.GuardarCompra(_compraId, txtNomeCompra.Text.Trim(), _utilizadorId);
 
                 MessageBox.Show("Lista de compras guardada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
@@ -295,73 +241,6 @@ namespace IShopping.View
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao guardar a lista: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Método que é chamado quando clicas numa linha da grelha
-        private void DgvItensPlaneados_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgvItensPlaneados.CurrentRow != null && !_modoLeitura)
-            {
-                try
-                {
-                    int itemId = (int)dgvItensPlaneados.CurrentRow.Cells["ID"].Value;
-
-                    using (var context = new ShoppingContext())
-                    {
-                        var item = context.itemCompras.Include(i => i.artigo).FirstOrDefault(i => i.id == itemId);
-
-                        if (item != null && item.artigo != null)
-                        {
-                            // Puxa os dados para cima para o utilizador editar
-                            cmbTipoArtigo.SelectedValue = item.artigo.TipoArtigoId;
-                            cmbArtigo.SelectedValue = item.artigo.Id;
-                            numQuantidadePrevista.Value = item.quantidadePrevista;
-                        }
-                    }
-                }
-                catch { }
-            }
-        }
-
-        // Método que é chamado quando clicas no botão "Atualizar Selecionado"
-        private void BtnAtualizarItem_Click(object sender, EventArgs e)
-        {
-            if (dgvItensPlaneados.CurrentRow == null)
-            {
-                MessageBox.Show("Selecione um artigo na tabela primeiro.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                int itemId = (int)dgvItensPlaneados.CurrentRow.Cells["ID"].Value;
-                int novoArtigoId = (int)cmbArtigo.SelectedValue;
-
-                using (var context = new ShoppingContext())
-                {
-                    var itemParaAtualizar = context.itemCompras.Find(itemId);
-                    var novoArtigo = context.artigos.Find(novoArtigoId);
-
-                    if (itemParaAtualizar != null && novoArtigo != null)
-                    {
-                        itemParaAtualizar.artigo = novoArtigo;
-                        itemParaAtualizar.quantidadePrevista = (int)numQuantidadePrevista.Value;
-                        itemParaAtualizar.DataAlteracao = DateTime.Now;
-
-                        var compra = context.compras.Find(_compraId);
-                        if (compra != null) compra.DataAlteracao = DateTime.Now;
-
-                        context.SaveChanges();
-                    }
-                }
-
-                AtualizarGrelhaItens();
-                MessageBox.Show("Artigo atualizado com sucesso!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao atualizar item: {ex.Message}");
             }
         }
     }

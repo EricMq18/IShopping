@@ -1,8 +1,6 @@
-﻿using IShopping.Model;
+﻿using IShopping.Controller;
 using System;
-using System.Data;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -11,12 +9,14 @@ namespace IShopping.View
     {
         private int _utilizadorId;
         private int _compraId;
+        private CompraController _controller;
 
         public FormCompra(int utilizadorId, int compraId)
         {
             InitializeComponent();
             _utilizadorId = utilizadorId;
             _compraId = compraId;
+            _controller = new CompraController();
 
             ConfigurarEventos();
         }
@@ -43,18 +43,12 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    var compra = context.compras.Find(_compraId);
-                    if (compra != null)
-                    {
-                        lblNomeCompra.Text = $"Carrinho Atual: {compra.nome}";
-                    }
-                }
+                string nome = _controller.ObterNomeCompra(_compraId);
+                lblNomeCompra.Text = $"Carrinho Atual: {nome}";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar cabeçalho da compra: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao carregar cabeçalho da compra: {ex.Message}");
             }
         }
 
@@ -62,17 +56,13 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    var categorias = context.tipos.ToList();
-                    cmbTipoArtigoExtra.DataSource = categorias;
-                    cmbTipoArtigoExtra.DisplayMember = "categoria";
-                    cmbTipoArtigoExtra.ValueMember = "id"; // Corrigido para minúscula, igual ao teu modelo
-                }
+                cmbTipoArtigoExtra.DataSource = _controller.ObterCategorias();
+                cmbTipoArtigoExtra.DisplayMember = "categoria";
+                cmbTipoArtigoExtra.ValueMember = "id";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}");
             }
         }
 
@@ -82,25 +72,13 @@ namespace IShopping.View
             {
                 try
                 {
-                    using (var context = new ShoppingContext())
-                    {
-                        var artigosFiltrados = context.artigos.Where(a => a.TipoArtigoId == tipoId).ToList();
-
-                        if (artigosFiltrados.Count > 0)
-                        {
-                            cmbArtigoExtra.DataSource = artigosFiltrados;
-                            cmbArtigoExtra.DisplayMember = "nome";
-                            cmbArtigoExtra.ValueMember = "id"; // Corrigido para minúscula
-                        }
-                        else
-                        {
-                            cmbArtigoExtra.DataSource = null;
-                        }
-                    }
+                    cmbArtigoExtra.DataSource = _controller.ObterArtigosPorCategoria(tipoId);
+                    cmbArtigoExtra.DisplayMember = "nome";
+                    cmbArtigoExtra.ValueMember = "id";
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao carregar os artigos desta categoria: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Erro ao carregar os artigos: {ex.Message}");
                 }
             }
         }
@@ -109,29 +87,11 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    var itensDestaCompra = context.itemCompras
-                        .Include("artigo")
-                        .Where(i => i.compra.id == _compraId)
-                        .Select(i => new
-                        {
-                            ID = i.id,
-                            Tipo = i.IsPrevisto ? "Previsto" : "Não Previsto",
-                            Artigo = i.artigo != null ? i.artigo.Nome : "Artigo Desconhecido",
-                            Qtd_Prevista = i.quantidadePrevista,
-                            Qtd_Adquirida = i.quantidadeAdquirida,
-                            Preco_Unitario = i.precoUnitario,
-                            Subtotal = i.quantidadeAdquirida * i.precoUnitario,
-                            Observacoes = i.Observacoes
-                        }).ToList();
-
-                    dgvItensCompra.DataSource = itensDestaCompra;
-                }
+                dgvItensCompra.DataSource = _controller.ObterItensDaCompra(_compraId);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao atualizar tabela de itens: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao atualizar tabela de itens: {ex.Message}");
             }
         }
 
@@ -171,28 +131,14 @@ namespace IShopping.View
             {
                 int itemId = (int)dgvItensCompra.CurrentRow.Cells["ID"].Value;
 
-                using (var context = new ShoppingContext())
-                {
-                    var itemParaAtualizar = context.itemCompras.Find(itemId);
-                    if (itemParaAtualizar != null)
-                    {
-                        itemParaAtualizar.quantidadeAdquirida = (int)numQtdAdquirida.Value;
-                        itemParaAtualizar.precoUnitario = precoUnitario;
-                        itemParaAtualizar.DataAlteracao = DateTime.Now;
-
-                        var compra = context.compras.Find(_compraId);
-                        if (compra != null) compra.DataAlteracao = DateTime.Now;
-
-                        context.SaveChanges();
-                    }
-                }
+                _controller.AtualizarItemAdquirido(itemId, (int)numQtdAdquirida.Value, precoUnitario, _compraId);
 
                 AtualizarGrelhaItens();
                 CalcularOrcamentoDisponivel();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao atualizar item: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao atualizar item: {ex.Message}");
             }
         }
 
@@ -215,30 +161,7 @@ namespace IShopping.View
             {
                 int artigoId = (int)cmbArtigoExtra.SelectedValue;
 
-                using (var context = new ShoppingContext())
-                {
-                    var compraAtual = context.compras.Find(_compraId);
-                    var artigoSelecionado = context.artigos.Find(artigoId);
-
-                    var novoItemExtra = new itemCompra
-                    {
-                        compra = compraAtual,
-                        artigo = artigoSelecionado,
-                        quantidadePrevista = 0, // Como é por impulso, a previsão era zero
-                        quantidadeAdquirida = (int)numQtdExtra.Value,
-                        precoUnitario = precoExtra,
-                        IsPrevisto = false,
-                        Observacoes = string.IsNullOrWhiteSpace(txtObservacoes.Text) ? "Compra por impulso" : txtObservacoes.Text,
-                        DataCriacao = DateTime.Now,
-                        DataAlteracao = DateTime.Now
-                    };
-
-                    context.itemCompras.Add(novoItemExtra);
-
-                    if (compraAtual != null) compraAtual.DataAlteracao = DateTime.Now;
-
-                    context.SaveChanges();
-                }
+                _controller.AdicionarItemExtra(_compraId, artigoId, (int)numQtdExtra.Value, precoExtra, txtObservacoes.Text);
 
                 txtPrecoExtra.Clear();
                 txtObservacoes.Clear();
@@ -249,7 +172,7 @@ namespace IShopping.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao inserir artigo não previsto: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao inserir artigo não previsto: {ex.Message}");
             }
         }
 
@@ -257,31 +180,14 @@ namespace IShopping.View
         {
             try
             {
-                using (var context = new ShoppingContext())
-                {
-                    int mesAtual = DateTime.Now.Month;
-                    int anoAtual = DateTime.Now.Year;
+                decimal saldoFinal = _controller.CalcularSaldoDisponivel(_compraId);
 
-                    // Ajustado para lidar com DateTime da propriedade "mes"
-                    var orcamentoMes = context.orcamentos
-                        .FirstOrDefault(o => o.mes.Month == mesAtual && o.mes.Year == anoAtual);
+                lblOrcamentoDisponivel.Text = $"Saldo Disponível: {saldoFinal.ToString("C2", CultureInfo.GetCultureInfo("pt-PT"))}";
 
-                    decimal valorDisponivel = orcamentoMes != null ? orcamentoMes.valor_max : 250.00m;
-
-                    // Somatório do que já foi gasto em todos os itens do carrinho
-                    decimal totalGastoCompra = context.itemCompras
-                        .Where(i => i.compra.id == _compraId)
-                        .Sum(i => (decimal?)(i.quantidadeAdquirida * i.precoUnitario)) ?? 0;
-
-                    decimal saldoFinal = valorDisponivel - totalGastoCompra;
-
-                    lblOrcamentoDisponivel.Text = $"Saldo Disponível: {saldoFinal.ToString("C2", CultureInfo.GetCultureInfo("pt-PT"))}";
-
-                    if (saldoFinal < 0)
-                        lblOrcamentoDisponivel.ForeColor = System.Drawing.Color.Red;
-                    else
-                        lblOrcamentoDisponivel.ForeColor = System.Drawing.Color.ForestGreen;
-                }
+                if (saldoFinal < 0)
+                    lblOrcamentoDisponivel.ForeColor = System.Drawing.Color.Red;
+                else
+                    lblOrcamentoDisponivel.ForeColor = System.Drawing.Color.ForestGreen;
             }
             catch (Exception)
             {
@@ -291,31 +197,21 @@ namespace IShopping.View
 
         private void BtnFecharCompra_Click(object sender, EventArgs e)
         {
-            var confirmacao = MessageBox.Show("Tem a certeza de que deseja finalizar e fechar esta compra? Não poderá efetuar mais alterações.",
+            var confirmacao = MessageBox.Show("Tem a certeza de que deseja finalizar e fechar esta compra?",
                 "Confirmar Fecho", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmacao == DialogResult.Yes)
             {
                 try
                 {
-                    using (var context = new ShoppingContext())
-                    {
-                        var compra = context.compras.Find(_compraId);
-                        if (compra != null)
-                        {
-                            compra.estado = Estado.fechado; // Ajustado para usar o enum
-                            compra.DataAlteracao = DateTime.Now;
-                            compra.dataFechar = DateTime.Now; // Regista a data exata do fecho
-                            context.SaveChanges();
-                        }
-                    }
+                    _controller.FecharCompra(_compraId); // Manda fechar na BD
 
                     MessageBox.Show("Compra concluída com sucesso! Carrinho fechado.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao fechar a compra: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Erro ao fechar a compra: {ex.Message}");
                 }
             }
         }
