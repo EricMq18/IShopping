@@ -23,7 +23,7 @@ namespace IShopping
             Database.SetInitializer(new AppDbInitializer());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GestaoOrcamento());
+            Application.Run(new Login());
         }
 
         public static void forms(Form formAtual, Form formNovo)
