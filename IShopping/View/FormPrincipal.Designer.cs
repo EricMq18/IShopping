@@ -9,14 +9,12 @@ namespace IShopping.View
         private System.Windows.Forms.MenuStrip menuPrincipal;
         private System.Windows.Forms.ToolStripMenuItem menuGestao;
         private System.Windows.Forms.ToolStripMenuItem itemUtilizadores;
-        private System.Windows.Forms.ToolStripMenuItem itemTiposArtigo;
         private System.Windows.Forms.ToolStripMenuItem itemArtigos;
         private System.Windows.Forms.ToolStripMenuItem itemOrcamentos;
         private System.Windows.Forms.ToolStripMenuItem menuCompras;
         private System.Windows.Forms.ToolStripMenuItem itemPlaneamento;
         private System.Windows.Forms.ToolStripMenuItem itemEstatisticas;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel lblUsuarioLogado;
         private System.Windows.Forms.DataGridView dgvComprasAbertas;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Button btnAbrirModoCompra;
@@ -35,6 +33,7 @@ namespace IShopping.View
             this.menuPrincipal = new System.Windows.Forms.MenuStrip();
             this.menuGestao = new System.Windows.Forms.ToolStripMenuItem();
             this.itemUtilizadores = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemTiposArtigo = new System.Windows.Forms.ToolStripMenuItem();
             this.itemArtigos = new System.Windows.Forms.ToolStripMenuItem();
             this.itemOrcamentos = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +52,7 @@ namespace IShopping.View
             // 
             // menuPrincipal
             // 
+            this.menuPrincipal.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuPrincipal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuGestao,
             this.menuCompras,
@@ -75,26 +75,35 @@ namespace IShopping.View
             // 
             // itemUtilizadores
             // 
+            this.itemUtilizadores.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportaToolStripMenuItem});
             this.itemUtilizadores.Name = "itemUtilizadores";
-            this.itemUtilizadores.Size = new System.Drawing.Size(180, 22);
+            this.itemUtilizadores.Size = new System.Drawing.Size(155, 22);
             this.itemUtilizadores.Text = "Utilizadores";
+            // 
+            // exportaToolStripMenuItem
+            // 
+            this.exportaToolStripMenuItem.Name = "exportaToolStripMenuItem";
+            this.exportaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.exportaToolStripMenuItem.Text = "Exportar Compras";
+            this.exportaToolStripMenuItem.Click += new System.EventHandler(this.exportaToolStripMenuItem_Click);
             // 
             // itemTiposArtigo
             // 
             this.itemTiposArtigo.Name = "itemTiposArtigo";
-            this.itemTiposArtigo.Size = new System.Drawing.Size(180, 22);
+            this.itemTiposArtigo.Size = new System.Drawing.Size(155, 22);
             this.itemTiposArtigo.Text = "Tipos de Artigo";
             // 
             // itemArtigos
             // 
             this.itemArtigos.Name = "itemArtigos";
-            this.itemArtigos.Size = new System.Drawing.Size(180, 22);
+            this.itemArtigos.Size = new System.Drawing.Size(155, 22);
             this.itemArtigos.Text = "Artigos";
             // 
             // itemOrcamentos
             // 
             this.itemOrcamentos.Name = "itemOrcamentos";
-            this.itemOrcamentos.Size = new System.Drawing.Size(180, 22);
+            this.itemOrcamentos.Size = new System.Drawing.Size(155, 22);
             this.itemOrcamentos.Text = "Orçamentos";
             // 
             // menuCompras
@@ -119,6 +128,7 @@ namespace IShopping.View
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblUsuarioLogado});
             this.statusStrip1.Location = new System.Drawing.Point(0, 438);
@@ -135,9 +145,11 @@ namespace IShopping.View
             // dgvComprasAbertas
             // 
             this.dgvComprasAbertas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvComprasAbertas.ColumnHeadersHeight = 29;
             this.dgvComprasAbertas.Location = new System.Drawing.Point(12, 80);
             this.dgvComprasAbertas.Name = "dgvComprasAbertas";
             this.dgvComprasAbertas.ReadOnly = true;
+            this.dgvComprasAbertas.RowHeadersWidth = 51;
             this.dgvComprasAbertas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvComprasAbertas.Size = new System.Drawing.Size(776, 300);
             this.dgvComprasAbertas.TabIndex = 2;
@@ -161,6 +173,7 @@ namespace IShopping.View
             this.btnAbrirModoCompra.TabIndex = 0;
             this.btnAbrirModoCompra.Text = "Entrar no Modo Compra";
             this.btnAbrirModoCompra.UseVisualStyleBackColor = false;
+            this.btnAbrirModoCompra.Click += new System.EventHandler(this.btnAbrirModoCompra_Click);
             // 
             // FormPrincipal
             // 
@@ -172,7 +185,7 @@ namespace IShopping.View
             this.Controls.Add(this.menuPrincipal);
             this.MainMenuStrip = this.menuPrincipal;
             this.Name = "FormPrincipal";
-            this.Text = "iShopping - Dashboard Principal";
+            this.Text = "iShopping - Form Principal";
             this.menuPrincipal.ResumeLayout(false);
             this.menuPrincipal.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -182,5 +195,9 @@ namespace IShopping.View
             this.PerformLayout();
 
         }
+
+        private ToolStripMenuItem exportaToolStripMenuItem;
+        private ToolStripStatusLabel lblUsuarioLogado;
+        private ToolStripMenuItem itemTiposArtigo;
     }
 }

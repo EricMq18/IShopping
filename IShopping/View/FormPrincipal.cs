@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IShopping.Controller;
+using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -20,14 +22,12 @@ namespace IShopping.View
 
             this.Load += FormPrincipal_Load;
 
-            // Subscrição de Eventos
-            itemUtilizadores.Click += (s, e) => AbrirFormulario("Utilizadores");
-            itemTiposArtigo.Click += (s, e) => AbrirFormulario("TiposArtigo");
+            // Eventos
             itemArtigos.Click += (s, e) => AbrirFormulario("Artigos");
+            itemTiposArtigo.Click += (s, e) => AbrirFormulario("TiposArtigo");
             itemOrcamentos.Click += (s, e) => AbrirFormulario("Orcamentos");
             itemPlaneamento.Click += (s, e) => AbrirFormulario("Planeamento");
             itemEstatisticas.Click += (s, e) => AbrirFormulario("Estatisticas");
-            btnAbrirModoCompra.Click += btnAbrirModoCompra_Click;
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -37,15 +37,21 @@ namespace IShopping.View
 
         private void AtualizarListaComprasAbertas()
         {
-            // Lógica para carregar via Entity Framework as compras onde 'fechada == false'
-            // dgvComprasAbertas.DataSource = context.Compras.Where(c => !c.Fechada).ToList();
+            try
+            {
+                var controller = new IShopping.Controller.CompraController();
+                dgvComprasAbertas.DataSource = controller.ObterComprasAbertas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar as compras em aberto: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnAbrirModoCompra_Click(object sender, EventArgs e)
         {
             if (dgvComprasAbertas.CurrentRow != null)
             {
-                // Abrir o Formulário do modo Compra (item h do enunciado) 
                 AbrirFormulario("ModoCompra");
             }
             else
@@ -60,18 +66,12 @@ namespace IShopping.View
 
             switch (tipo)
             {
-                case "Utilizadores":
-                    // Ainda não tens o formulário de Gestão de Utilizadores criado. 
-                    // formDestino = new GestaoUtilizadores(); 
+                case "Artigos":
+                    formDestino = new GestaoArtigos();
                     break;
 
                 case "TiposArtigo":
-                    // Ainda não tens o formulário de Tipos de Artigo criado.
-                    // formDestino = new GestaoTiposArtigo(); 
-                    break;
-
-                case "Artigos":
-                    formDestino = new GestaoArtigos();
+                    formDestino = new GestaoCategorias(); 
                     break;
 
                 case "Orcamentos":
@@ -80,12 +80,16 @@ namespace IShopping.View
                     break;
 
                 case "Planeamento":
-                    // Ainda não tens o formulário de Planeamento criado.
-                    // formDestino = new FormPlaneamento(); 
+                    formDestino = new FormPlaneamentoCompras(_utilizadorId); 
                     break;
 
                 case "ModoCompra":
-                    formDestino = new FormCompra();
+                    if (dgvComprasAbertas.CurrentRow != null)
+                    {
+                        int compraId = Convert.ToInt32(dgvComprasAbertas.CurrentRow.Cells["id"].Value);
+
+                        formDestino = new FormCompra(_utilizadorId, compraId);
+                    }
                     break;
 
                 case "Estatisticas":
@@ -97,7 +101,30 @@ namespace IShopping.View
             if (formDestino != null)
             {
                 formDestino.ShowDialog();
-                AtualizarListaComprasAbertas(); // Atualiza a lista caso algo tenha mudado
+                AtualizarListaComprasAbertas();
+            }
+        }
+
+        private void exportaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "Selecione a pasta onde deseja guardar a exportação CSV:";
+                folderDialog.ShowNewFolderButton = true;
+
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {                        
+                        string caminhoFicheiro = new ExportarCsvController().CriarFicheiro(folderDialog.SelectedPath.ToString(), _utilizadorId);
+
+                        MessageBox.Show($"Exportação realizada com sucesso!\n\nFicheiro gerado em:\n{caminhoFicheiro}","Sucesso na Exportação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ocorreu um erro ao exportar os dados:\n{ex.Message}","Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }
