@@ -23,7 +23,7 @@ namespace IShopping.View
         {
             InitializeComponent();
             _artigoController = new ArtigoController();
-            _categoriaController = new CategoriaController();
+            _categoriaController = new CategoriaController();            
         }
 
         private void GestaoArtigos_Load(object sender, EventArgs e)
@@ -31,7 +31,7 @@ namespace IShopping.View
             CarregarComboBoxes();
             CarregarArtigos(0); // 0 = Todos
         }
-
+        
         private void CarregarComboBoxes()
         {
             var categoriasParaFormulario = _categoriaController.ObterCategorias();

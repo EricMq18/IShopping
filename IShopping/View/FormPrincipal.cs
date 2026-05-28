@@ -20,14 +20,14 @@ namespace IShopping.View
             _utilizadorId = utilizadorId;
             lblUsuarioLogado.Text = $"Utilizador: {nomeUsuario}";
 
-            this.Load += FormPrincipal_Load;
-
+            this.VisibleChanged += FormPrincipal_VisibleChanged;
+            this.Load += FormPrincipal_Load;            
             // Eventos
-            itemArtigos.Click += (s, e) => AbrirFormulario("Artigos");
-            itemTiposArtigo.Click += (s, e) => AbrirFormulario("TiposArtigo");
-            itemOrcamentos.Click += (s, e) => AbrirFormulario("Orcamentos");
-            itemPlaneamento.Click += (s, e) => AbrirFormulario("Planeamento");
-            itemEstatisticas.Click += (s, e) => AbrirFormulario("Estatisticas");
+            itemArtigos.Click += (s, e) => Program.forms(this, new GestaoArtigos());
+            itemTiposArtigo.Click += (s, e) => Program.forms(this, new GestaoCategorias());
+            itemOrcamentos.Click += (s, e) => Program.forms(this, this);
+            itemPlaneamento.Click += (s, e) => Program.forms(this,new FormPlaneamentoCompras(_utilizadorId));
+            itemEstatisticas.Click += (s, e) => Program.forms(this, this);
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -35,7 +35,15 @@ namespace IShopping.View
             AtualizarListaComprasAbertas();
         }
 
-        private void AtualizarListaComprasAbertas()
+        private void FormPrincipal_VisibleChanged(object sender, EventArgs e)
+        {            
+            if (this.Visible)
+            {
+                AtualizarListaComprasAbertas();
+            }
+        }
+
+        public void AtualizarListaComprasAbertas()
         {
             try
             {
@@ -52,59 +60,14 @@ namespace IShopping.View
         {
             if (dgvComprasAbertas.CurrentRow != null)
             {
-                AbrirFormulario("ModoCompra");
+                int compraId = Convert.ToInt32(dgvComprasAbertas.CurrentRow.Cells["id"].Value);
+                Program.forms(this, new FormCompra(_utilizadorId, compraId));
             }
             else
             {
                 MessageBox.Show("Selecione uma compra na lista para iniciar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-        private void AbrirFormulario(string tipo)
-        {
-            Form formDestino = null;
-
-            switch (tipo)
-            {
-                case "Artigos":
-                    formDestino = new GestaoArtigos();
-                    break;
-
-                case "TiposArtigo":
-                    formDestino = new GestaoCategorias(); 
-                    break;
-
-                case "Orcamentos":
-                    // Ainda não tens o formulário de Orçamentos criado.
-                    // formDestino = new GestaoOrcamentos(); 
-                    break;
-
-                case "Planeamento":
-                    formDestino = new FormPlaneamentoCompras(_utilizadorId); 
-                    break;
-
-                case "ModoCompra":
-                    if (dgvComprasAbertas.CurrentRow != null)
-                    {
-                        int compraId = Convert.ToInt32(dgvComprasAbertas.CurrentRow.Cells["id"].Value);
-
-                        formDestino = new FormCompra(_utilizadorId, compraId);
-                    }
-                    break;
-
-                case "Estatisticas":
-                    // Ainda não tens o formulário de Estatísticas criado.
-                    // formDestino = new FormEstatisticas();
-                    break;
-            }
-
-            if (formDestino != null)
-            {
-                formDestino.ShowDialog();
-                AtualizarListaComprasAbertas();
-            }
-        }
-
         private void exportaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var folderDialog = new FolderBrowserDialog())
@@ -126,6 +89,11 @@ namespace IShopping.View
                     }
                 }
             }
+        }
+
+        private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

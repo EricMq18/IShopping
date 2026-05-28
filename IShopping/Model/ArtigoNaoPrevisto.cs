@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace IShopping.Model
 {
-    public class ArtigoNaoPrevisto
+    public class ArtigoNaoPrevisto : itemCompra
     {
-        [Key]
-        public int id { get; set; }
-        [StringLength(150)]
         public string descricao {  get; set; }
     }
 }

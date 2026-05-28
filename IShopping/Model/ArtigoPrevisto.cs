@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace IShopping.Model
 {
-    public class ArtigoPrevisto
+    public class ArtigoPrevisto : itemCompra
     {
-        [Key]
-        public int id { get; set; }
         public int qntPrevista {  get; set; }
     }
 }

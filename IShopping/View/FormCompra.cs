@@ -1,6 +1,8 @@
 ﻿using IShopping.Controller;
+using IShopping.Model;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -57,8 +59,9 @@ namespace IShopping.View
             try
             {
                 cmbTipoArtigoExtra.DataSource = _controller.ObterCategorias();
-                cmbTipoArtigoExtra.DisplayMember = "categoria";
-                cmbTipoArtigoExtra.ValueMember = "id";
+                // ATENÇÃO ÀS MAIÚSCULAS: Correspondem às propriedades do modelo TipoArtigo.cs
+                cmbTipoArtigoExtra.DisplayMember = "Categoria";
+                cmbTipoArtigoExtra.ValueMember = "Id";
             }
             catch (Exception ex)
             {
@@ -73,8 +76,9 @@ namespace IShopping.View
                 try
                 {
                     cmbArtigoExtra.DataSource = _controller.ObterArtigosPorCategoria(tipoId);
-                    cmbArtigoExtra.DisplayMember = "nome";
-                    cmbArtigoExtra.ValueMember = "id";
+                    // ATENÇÃO ÀS MAIÚSCULAS: Correspondem às propriedades do modelo Artigo.cs
+                    cmbArtigoExtra.DisplayMember = "Nome";
+                    cmbArtigoExtra.ValueMember = "Id";
                 }
                 catch (Exception ex)
                 {
@@ -87,7 +91,21 @@ namespace IShopping.View
         {
             try
             {
-                dgvItensCompra.DataSource = _controller.ObterItensDaCompra(_compraId);
+                var itensOriginais = _controller.ObterItensDaCompra(_compraId);
+                
+                var itensFormatados = itensOriginais.Select(i => new
+                {
+                    ID = i.id,
+                    Tipo = i is ArtigoPrevisto ? "Previsto" : "Não Previsto",
+                    Artigo = i.artigo != null ? i.artigo.Nome : "Artigo Desconhecido",
+                    Qtd_Prevista = i is ArtigoPrevisto ap ? ap.qntPrevista : 0,
+                    Qtd_Adquirida = i.quantidadeAdquirida,
+                    Preco_Unitario = i.precoUnitario,
+                    Subtotal = i.quantidadeAdquirida * i.precoUnitario,
+                    Observacoes = i is ArtigoNaoPrevisto anp ? anp.descricao : ""
+                }).ToList();
+
+                dgvItensCompra.DataSource = itensFormatados;
             }
             catch (Exception ex)
             {
@@ -204,7 +222,7 @@ namespace IShopping.View
             {
                 try
                 {
-                    _controller.FecharCompra(_compraId); // Manda fechar na BD
+                    _controller.FecharCompra(_compraId);
 
                     MessageBox.Show("Compra concluída com sucesso! Carrinho fechado.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();

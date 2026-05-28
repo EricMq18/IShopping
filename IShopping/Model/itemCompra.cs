@@ -11,20 +11,18 @@ namespace IShopping.Model
     {
         [Key]
         public int id { get; set; }
-        public int quantidadePrevista { get; set; }
         public int quantidadeAdquirida { get; set; }
         public decimal precoUnitario { get; set; }
 
-        public bool IsPrevisto { get; set; } = true;
-        public string Observacoes { get; set; }
-        public Artigo artigo { get; set; }
-        public Compra compra { get; set; }
+        // ADICIONAR VIRTUAL AQUI:
+        public virtual Artigo artigo { get; set; }
+        public virtual Compra compra { get; set; }
 
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public DateTime DataAlteracao { get; set; } = DateTime.Now;
 
-        // Identificação dos utilizadores envolvidos através do objeto direto
-        public user userCriador { get; set; }
-        public user userAlterador { get; set; }
+        // ADICIONAR VIRTUAL AQUI:
+        public virtual user userCriador { get; set; }
+        public virtual user userAlterador { get; set; }
     }
 }

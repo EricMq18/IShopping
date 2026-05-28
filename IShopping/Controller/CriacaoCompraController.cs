@@ -6,90 +6,82 @@ using System.Linq;
 
 namespace IShopping.Controller
 {
-    public class ItemPlaneadoDTO
-    {
-        public int ID { get; set; }
-        public string Produto { get; set; }
-        public int Qtd_Prevista { get; set; }
-    }
-
-    public class DetalheItemDTO
-    {
-        public int TipoArtigoId { get; set; }
-        public int ArtigoId { get; set; }
-        public int Quantidade { get; set; }
-    }
-
-    public class CabecalhoCompraDTO
-    {
-        public string Nome { get; set; }
-        public Estado EstadoCompra { get; set; }
-    }
-
     public class CriacaoCompraController
     {
-        public object ObterCategorias()
+        public List<TipoArtigo> ObterCategorias()
         {
             using (var context = new ShoppingContext())
             {
-                return context.tipos.Select(t => new { Id = t.Id, Categoria = t.Categoria }).ToList();
+                return context.tipos.ToList();
             }
         }
 
-        public object ObterArtigosPorCategoria(int tipoId)
+        public List<Artigo> ObterArtigosPorCategoria(int tipoId)
         {
             using (var context = new ShoppingContext())
             {
-                return context.artigos.Where(a => a.TipoArtigoId == tipoId).Select(a => new { Id = a.Id, Nome = a.Nome }).ToList();
+                return context.artigos.Where(a => a.TipoArtigoId == tipoId).ToList();
+            }
+        }
+        public Compra ObterCabecalhoCompra(int compraId)
+        {
+            using (var context = new ShoppingContext())
+            {
+                return context.compras.FirstOrDefault(c => c.id == compraId);
             }
         }
 
-        public CabecalhoCompraDTO ObterCabecalhoCompra(int compraId)
+        public List<ArtigoPrevisto> ObterItensPlaneados(int compraId)
+        {
+            if (compraId == 0) return new List<ArtigoPrevisto>();
+
+            using (var context = new ShoppingContext())
+            {
+                // CORREÇÃO: Filtra apenas pelos artigos previstos 
+                return context.itemCompras
+                    .OfType<ArtigoPrevisto>()
+                    .Include(i => i.artigo)
+                    .Where(i => i.compra.id == compraId)
+                    .ToList();
+            }
+        }
+        public void GuardarCompra(int compraId, string nomeCompra, int utilizadorId)
         {
             using (var context = new ShoppingContext())
             {
-                var compra = context.compras.FirstOrDefault(c => c.id == compraId);
-                if (compra != null)
+                if (compraId == 0)
                 {
-                    return new CabecalhoCompraDTO { Nome = compra.nome, EstadoCompra = compra.estado };
+                    var utilizadorAtual = context.users.Find(utilizadorId);
+                    var novaCompra = new Compra
+                    {
+                        nome = string.IsNullOrWhiteSpace(nomeCompra) ? "Nova Lista Planeada" : nomeCompra,
+                        estado = Estado.aberto,
+                        dataCriacao = DateTime.Now,
+                        DataAlteracao = DateTime.Now,
+                        userCriador = utilizadorAtual
+                    };
+                    context.compras.Add(novaCompra);
                 }
-                return null;
+                else
+                {
+                    var compraExistente = context.compras.Find(compraId);
+                    if (compraExistente != null)
+                    {
+                        compraExistente.nome = string.IsNullOrWhiteSpace(nomeCompra) ? "Lista Planeada" : nomeCompra;
+                        compraExistente.DataAlteracao = DateTime.Now;
+                    }
+                }
+                context.SaveChanges();
             }
         }
-
-        public List<ItemPlaneadoDTO> ObterItensPlaneados(int compraId)
+        public ArtigoPrevisto ObterDetalhesItem(int itemId)
         {
-            if (compraId == 0) return new List<ItemPlaneadoDTO>();
-
             using (var context = new ShoppingContext())
             {
                 return context.itemCompras
+                    .OfType<ArtigoPrevisto>()
                     .Include(i => i.artigo)
-                    .Where(i => i.compra.id == compraId && i.IsPrevisto == true)
-                    .Select(i => new ItemPlaneadoDTO
-                    {
-                        ID = i.id,
-                        Produto = i.artigo != null ? i.artigo.Nome : "Desconhecido",
-                        Qtd_Prevista = i.quantidadePrevista
-                    }).ToList();
-            }
-        }
-
-        public DetalheItemDTO ObterDetalhesItem(int itemId)
-        {
-            using (var context = new ShoppingContext())
-            {
-                var item = context.itemCompras.Include(i => i.artigo).FirstOrDefault(i => i.id == itemId);
-                if (item != null && item.artigo != null)
-                {
-                    return new DetalheItemDTO
-                    {
-                        TipoArtigoId = item.artigo.TipoArtigoId,
-                        ArtigoId = item.artigo.Id,
-                        Quantidade = item.quantidadePrevista
-                    };
-                }
-                return null;
+                    .FirstOrDefault(i => i.id == itemId);
             }
         }
 
@@ -110,7 +102,6 @@ namespace IShopping.Controller
                         DataAlteracao = DateTime.Now,
                         userCriador = utilizadorAtual
                     };
-
                     context.compras.Add(compraAtual);
                     context.SaveChanges();
                     compraId = compraAtual.id;
@@ -122,15 +113,14 @@ namespace IShopping.Controller
 
                 var artigoSelecionado = context.artigos.Find(artigoId);
                 var utilizadorAcao = context.users.Find(utilizadorId);
-
-                var novoItem = new itemCompra
+                
+                var novoItem = new ArtigoPrevisto
                 {
                     compra = compraAtual,
                     artigo = artigoSelecionado,
-                    quantidadePrevista = qtd,
+                    qntPrevista = qtd,
                     quantidadeAdquirida = 0,
                     precoUnitario = 0,
-                    IsPrevisto = true,
                     DataCriacao = DateTime.Now,
                     DataAlteracao = DateTime.Now,
                     userCriador = utilizadorAcao
@@ -149,13 +139,13 @@ namespace IShopping.Controller
         {
             using (var context = new ShoppingContext())
             {
-                var itemParaAtualizar = context.itemCompras.Find(itemId);
+                var itemParaAtualizar = context.itemCompras.OfType<ArtigoPrevisto>().FirstOrDefault(i => i.id == itemId);
                 var novoArtigo = context.artigos.Find(novoArtigoId);
 
                 if (itemParaAtualizar != null && novoArtigo != null)
                 {
                     itemParaAtualizar.artigo = novoArtigo;
-                    itemParaAtualizar.quantidadePrevista = novaQtd;
+                    itemParaAtualizar.qntPrevista = novaQtd;
                     itemParaAtualizar.DataAlteracao = DateTime.Now;
 
                     var compra = context.compras.Find(compraId);
@@ -180,36 +170,6 @@ namespace IShopping.Controller
 
                     context.SaveChanges();
                 }
-            }
-        }
-
-        public void GuardarCompra(int compraId, string nomeCompra, int utilizadorId)
-        {
-            using (var context = new ShoppingContext())
-            {
-                if (compraId == 0)
-                {
-                    var utilizadorAtual = context.users.Find(utilizadorId);
-                    var novaCompra = new Compra
-                    {
-                        nome = nomeCompra,
-                        estado = Estado.aberto,
-                        dataCriacao = DateTime.Now,
-                        DataAlteracao = DateTime.Now,
-                        userCriador = utilizadorAtual
-                    };
-                    context.compras.Add(novaCompra);
-                }
-                else
-                {
-                    var compraExistente = context.compras.Find(compraId);
-                    if (compraExistente != null)
-                    {
-                        compraExistente.nome = nomeCompra;
-                        compraExistente.DataAlteracao = DateTime.Now;
-                    }
-                }
-                context.SaveChanges();
             }
         }
     }
