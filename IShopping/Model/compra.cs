@@ -23,11 +23,10 @@ namespace IShopping.Model
         public DateTime dataCriacao { get; set; } = DateTime.Now;
         public DateTime DataAlteracao { get; set; } = DateTime.Now;
         public DateTime? dataFechar { get; set; }
-
-        // Relacionamentos por objeto direto
-        public user userCriador { get; set; }
-        public user userFechou { get; set; }
-
-        public List<itemCompra> listaCompra { get; set; } = new List<itemCompra>();
+        
+        public virtual user userCriador { get; set; }
+        public virtual user userFechou { get; set; }
+        
+        public virtual List<itemCompra> listaCompra { get; set; } = new List<itemCompra>();
     }
 }

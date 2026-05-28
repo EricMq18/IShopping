@@ -1,6 +1,7 @@
 ﻿using IShopping.Controller;
-using IShopping.Model; // Necessário apenas para o Enum Estado
+using IShopping.Model;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace IShopping.View
@@ -10,7 +11,7 @@ namespace IShopping.View
         private int _utilizadorId;
         private int _compraId;
         private bool _modoLeitura;
-        private CriacaoCompraController _controller; // O Cérebro
+        private CriacaoCompraController _controller;
 
         public FormCriacaoCompra(int utilizadorId)
         {
@@ -79,9 +80,9 @@ namespace IShopping.View
                 var cabecalho = _controller.ObterCabecalhoCompra(_compraId);
                 if (cabecalho != null)
                 {
-                    txtNomeCompra.Text = cabecalho.Nome;
+                    txtNomeCompra.Text = cabecalho.nome;
 
-                    if (cabecalho.EstadoCompra == Estado.fechado)
+                    if (cabecalho.estado == Estado.fechado)
                     {
                         _modoLeitura = true;
                         DesativarControlosParaLeitura();
@@ -150,9 +151,9 @@ namespace IShopping.View
 
                     if (detalhes != null)
                     {
-                        cmbTipoArtigo.SelectedValue = detalhes.TipoArtigoId;
-                        cmbArtigo.SelectedValue = detalhes.ArtigoId;
-                        numQuantidadePrevista.Value = detalhes.Quantidade;
+                        cmbTipoArtigo.SelectedValue = detalhes.artigo.TipoArtigoId;
+                        cmbArtigo.SelectedValue = detalhes.id;
+                        numQuantidadePrevista.Value = detalhes.qntPrevista;
                     }
                 }
                 catch { }
@@ -217,10 +218,22 @@ namespace IShopping.View
             if (_compraId == 0) return;
 
             try
-            {
-                dgvItensPlaneados.DataSource = _controller.ObterItensPlaneados(_compraId);
+            {                
+                var itensPlaneados = _controller.ObterItensPlaneados(_compraId);
+                
+                var itensFormatados = itensPlaneados.Select(i => new
+                {
+                    ID = i.id,
+                    Produto = i.artigo != null ? i.artigo.Nome : "Artigo Desconhecido",
+                    Qtd_Prevista = i.qntPrevista
+                }).ToList();
+                
+                dgvItensPlaneados.DataSource = itensFormatados;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar tabela de itens: {ex.Message}");
+            }
         }
 
         private void BtnGuardarCompra_Click(object sender, EventArgs e)

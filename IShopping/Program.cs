@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,9 +29,21 @@ namespace IShopping
 
         public static void forms(Form formAtual, Form formNovo)
         {
-            formAtual.Hide();
-            formNovo.ShowDialog();
-            formAtual.Close();
+            try
+            {
+                formAtual.Hide();
+                formNovo.ShowDialog();
+                formAtual.Show();
+            }
+            catch (Exception)
+            {
+                if(formNovo == formAtual)
+                {                    
+                    return;
+                }
+                throw;
+            }
+                
         }
     }
 }

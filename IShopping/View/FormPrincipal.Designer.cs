@@ -186,6 +186,7 @@ namespace IShopping.View
             this.MainMenuStrip = this.menuPrincipal;
             this.Name = "FormPrincipal";
             this.Text = "iShopping - Form Principal";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPrincipal_FormClosed);
             this.menuPrincipal.ResumeLayout(false);
             this.menuPrincipal.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

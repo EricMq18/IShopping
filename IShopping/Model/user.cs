@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace IShopping.Model
 {    
@@ -18,6 +20,12 @@ namespace IShopping.Model
 
         [StringLength(150)]
         public string password {  get; set; }
+        public override string ToString()
+        {
+            return username;
+        }
 
     }
-}
+
+    
+    }
