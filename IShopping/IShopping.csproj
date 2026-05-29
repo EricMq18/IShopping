@@ -61,6 +61,7 @@
     <Compile Include="Controller\CategoriaController.cs" />
     <Compile Include="Controller\CompraController.cs" />
     <Compile Include="Controller\CriacaoCompraController.cs" />
+    <Compile Include="Controller\EstatisticasController.cs" />
     <Compile Include="Controller\ExportarCsvController.cs" />
     <Compile Include="Controller\OrcamentoController.cs" />
     <Compile Include="Controller\PlaneamentoController.cs" />
@@ -80,6 +81,12 @@
     </Compile>
     <Compile Include="View\FormCriacaoCompra.Designer.cs">
       <DependentUpon>FormCriacaoCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FormEstatisticas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FormEstatisticas.Designer.cs">
+      <DependentUpon>FormEstatisticas.cs</DependentUpon>
     </Compile>
     <Compile Include="View\FormPlaneamentoCompras.cs">
       <SubType>Form</SubType>
