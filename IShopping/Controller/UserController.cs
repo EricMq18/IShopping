@@ -28,5 +28,18 @@ namespace IShopping.Controller
             }
         }
 
+        public object AtualizarLista()
+        {
+            using (var db = new ShoppingContext())
+            {                
+                return db.users.Select(a => new
+                {
+                    Id = a.id,           
+                    username = a.username,
+                    password = a.password
+                }).ToList();
+            }
+        }
+
     }
 }
