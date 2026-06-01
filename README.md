@@ -16,7 +16,7 @@ Observação: Pode ser registada outros login
 
 # Descrição do Projeto
 
-Este projeto consiste no desenvolvimente em uma aplicação de gestão de compras domésticas chamada # IShopping
+Este projeto consiste no desenvolvimente em uma aplicação de gestão de compras domésticas chamada **IShopping
 Tem como objetivo ser um projeto possibilite a utilização de forma genérica a qualquer utilizador, dando liberdade
 de personalizar as categorias de artigos, adicionar produtos, crição de compras e exportar as compras para o Excel
 
