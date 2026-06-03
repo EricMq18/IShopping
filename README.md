@@ -10,13 +10,17 @@ Desenvolvimento de Aplicações
 
 # Dados de Acessos definidos por padrão
 
-Username: Admin\
+Username: admin\
 Password: admin\
 Observação: Pode ser registada outros login
 
 # Descrição do Projeto
 
-Este projeto consiste no desenvolvimente em uma aplicação de gestão de compras domésticas
+Este projeto consiste no desenvolvimente em uma aplicação de gestão de compras domésticas chamada **IShopping**
+Tem como objetivo ser um projeto possibilite a utilização de forma genérica a qualquer utilizador, dando liberdade
+de personalizar as categorias de artigos, adicionar produtos, crição de compras e exportar as compras para o Excel
+
+Por padrão a aplicação já vem com dados preenchidos, porém pode ser alterados a vontade do utilizador.
 
 # Requisitos
 - Visual Studio;

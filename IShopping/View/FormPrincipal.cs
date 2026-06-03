@@ -8,6 +8,7 @@ namespace IShopping.View
     public partial class FormPrincipal : Form
     {
         private int _utilizadorId;
+        private string _nomeUserAtual;
 
         public FormPrincipal()
         {
@@ -18,6 +19,7 @@ namespace IShopping.View
         {
             InitializeComponent();
             _utilizadorId = utilizadorId;
+            _nomeUserAtual = nomeUsuario;
             lblUsuarioLogado.Text = $"Utilizador: {nomeUsuario}";
 
             this.VisibleChanged += FormPrincipal_VisibleChanged;
@@ -94,6 +96,11 @@ namespace IShopping.View
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void gestãoUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.forms(this, new UserForm(_utilizadorId, _nomeUserAtual));
         }
     }
 }
