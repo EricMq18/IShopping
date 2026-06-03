@@ -25,7 +25,7 @@ namespace IShopping.View
             // Eventos
             itemArtigos.Click += (s, e) => Program.forms(this, new GestaoArtigos());
             itemTiposArtigo.Click += (s, e) => Program.forms(this, new GestaoCategorias());
-            itemOrcamentos.Click += (s, e) => Program.forms(this, this);
+            itemOrcamentos.Click += (s, e) => Program.forms(this, new GestaoOrcamento());
             itemPlaneamento.Click += (s, e) => Program.forms(this,new FormPlaneamentoCompras(_utilizadorId));
             itemEstatisticas.Click += (s, e) => Program.forms(this, new FormEstatisticas());
         }
