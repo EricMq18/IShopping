@@ -1,47 +1,79 @@
-# IShopping
+#  IShopping
 
-### Grupo:
-Eric Marques `2025185438`\
-Martim Duarte Borges `2025187810`\
-Dinis Dos Reis Gonçalves `2025135981`
--------------------
+O **IShopping** é uma aplicação desktop para a gestão de compras domésticas. O projeto foi desenhado para ser intuitivo e altamente personalizável, permitindo aos utilizadores gerir categorias de artigos, planear listas de compras, controlar gastos por impulso e exportar relatórios detalhados.
 
-Desenvolvimento de Aplicações
+---
 
-## Dados de Acesso por Padrão
+##  Grupo de Desenvolvimento
 
-Username: admin\
-Password: admin\
-Observação: Podem ser registados outros utilizadores para login.
+* **Eric Marques** - `2025185438`
+* **Martim Duarte Borges** - `2025187810`
+* **Dinis Dos Reis Gonçalves** - `2025135981`
 
-## Descrição do Projeto
+*Disciplina: Desenvolvimento de Aplicações*
 
-Este projeto consiste no desenvolvimento de uma aplicação de gestão de compras domésticas chamada **IShopping**.
-Tem como objetivo ser um projeto de utilização genérica para qualquer utilizador, dando liberdade para personalizar as categorias de artigos, adicionar produtos, criar listas de compras e exportar os relatórios em formato CSV.
+---
 
-Por padrão, a aplicação já vem com dados pré-preenchidos (Seed), porém estes podem ser alterados à vontade do utilizador.
+##  Tecnologias Utilizadas
 
-## Requisitos
-- Visual Studio (com carga de trabalho para desktop .NET);
-- .NET Framework 4.8;
-- Entity Framework 6;
-- Clonar o repositório;
-- Abrir a Solução: No Visual Studio, vá em **Arquivo > Abrir > Projeto/Solução** e selecione o ficheiro `IShopping.sln`.
+* **IDE:** Visual Studio (com a carga de trabalho de desenvolvimento para desktop .NET)
+* **Framework:** .NET Framework 4.8
+* **ORM:** Entity Framework 6
+* **Base de Dados / Armazenamento:** Dados pré-preenchidos (*Seed*) incluídos por padrão para testes rápidos.
 
-## Utilização
+---
 
-1. **Registo / Login**
-   - A aplicação permite o registo de novos utilizadores no formulário de Autenticação.
-   - Permite o login de utilizadores com as credenciais padrão ou com contas recém-criadas.
+##  Dados de Acesso (Padrão)
 
-2. **Menu Principal**
-   - Possui uma grelha central que lista e permite a visualização rápida de compras em aberto.
-   - Possui uma barra de navegação no topo com as seguintes opções:
-      - **Gestão:** Utilizadores, Tipos de Artigos, Artigos e Orçamentos.
-      - **Compras:** Planeamento de Compras (Artigos previstos e não previstos).
-      - **Estatísticas / Exportação:** Opção para exportar os históricos de compras diretamente para um relatório.
+Para o primeiro acesso ao sistema, utilize as seguintes credenciais:
 
-3. **Gestão de Inventário e Compras**
-   - **Artigos e Categorias:** Permite criar, editar e associar artigos a tipos/categorias específicas.
-   - **Modo de Compra:** Permite criar uma lista, estipular quantidades e preços unitários, discriminando os artigos planeados daqueles que foram adicionados por impulso em loja.
-   - **Exportação de Dados:** Exporta os dados estruturados de compras num ficheiro separado por ponto e vírgula, compatível com Excel.
+| Campo | Credencial |
+| :--- | :--- |
+| **Username** | `admin` |
+| **Password** | `admin` |
+
+>  **Nota:** Novos utilizadores podem ser registados livremente através do formulário de autenticação da aplicação.
+
+---
+
+##  Requisitos e Como Executar
+
+### Pré-requisitos
+Certifique-se de que tem instalado na sua máquina:
+* IDE Visual Studio com suporte para **desenvolvimento para desktop .NET**.
+
+### Passos para Execução
+1. **Clonar o repositório:**
+   Faça o clone do repositório utilizando o Git para a sua máquina local através do URL do projeto.
+
+2. **Abrir o projeto:**
+   * No Visual Studio, vá a **Arquivo > Abrir > Projeto/Solução** (ou *File > Open > Project/Solution*).
+   * Selecione o ficheiro `IShopping.sln`.
+
+3. **Restaurar Pacotes NuGet:**
+   * O Visual Studio deverá restaurar automaticamente o *Entity Framework 6*. Caso contrário, clique com o botão direito na Solução e selecione **Restore NuGet Packages**.
+
+4. **Executar:**
+   * Pressione `F5` ou clique no botão **Iniciar/Start** no Visual Studio.
+
+---
+
+##  Funcionalidades Principais
+
+### 1. Autenticação e Segurança
+* **Registo de Utilizadores:** Criação de novas contas diretamente no formulário de login.
+* **Controlo de Acesso:** Login seguro associado ao perfil do utilizador.
+
+### 2. Painel Principal (Dashboard)
+* **Visualização Rápida:** Grelha central que lista de imediato as compras em aberto.
+* **Navegação Estruturada:** Menu superior dividido estrategicamente em:
+  * **Gestão:** Administração de Utilizadores, Tipos de Artigos, Artigos e Orçamentos.
+  * **Compras:** Planeamento e gestão de carrinhos (separando artigos previstos de não previstos).
+  * **Estatísticas:** Acesso a históricos e relatórios.
+
+### 3. Gestão de Inventário e Carrinho
+* **Artigos e Categorias:** Criação, edição e associação de produtos a categorias específicas.
+* **Modo de Compra Inteligente:** Permite estipular quantidades e preços unitários, discriminando de forma clara os artigos planeados daqueles que foram adicionados por "impulso" na loja.
+
+### 4. Exportação de Dados
+* **Relatórios em CSV:** Exportação do histórico de compras num ficheiro estruturado (separado por ponto e vírgula `;`), totalmente compatível com o Microsoft Excel ou outras ferramentas de análise.
