@@ -51,5 +51,52 @@ namespace IShopping.View
                 txtPass.Text = senha;
             }
         }
+
+        private void btnCriar_Click(object sender, EventArgs e)
+        {
+            int userId = new UserController().UtilizadorValido(txtUser.Text, txtPass.Text);
+
+            if (userId == -1)
+            {
+                new UserController().registarUser(txtUser.Text, txtPass.Text);
+                CarregarUsers();
+                MessageBox.Show("Registo Efetuado com sucesso");
+            }
+            else
+            {
+                MessageBox.Show("Credenciais inválidas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnRemover_Click(object sender, EventArgs e)
+        {            
+            if (lstUsers.SelectedItem != null && lstUsers.SelectedValue is int idSelecionado)
+            {                
+                var confirmacao = MessageBox.Show("Tem a certeza que deseja eliminar este utilizador?",
+                    "Confirmar Eliminação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (confirmacao == DialogResult.Yes)
+                {
+                    try
+                    {                        
+                        new UserController().eliminarUser(idSelecionado);                        
+                        txtUser.Clear();
+                        txtPass.Clear();
+                        
+                        CarregarUsers();
+
+                        MessageBox.Show("Utilizador removido com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao remover utilizador: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecione um utilizador na lista para o remover.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

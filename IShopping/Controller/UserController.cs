@@ -41,5 +41,18 @@ namespace IShopping.Controller
             }
         }
 
+        public void eliminarUser(int id)
+        {
+            using (var db = new ShoppingContext())
+            {
+                var utilizador = db.users.FirstOrDefault(u => u.id == id);
+                if (utilizador != null)
+                {
+                    db.users.Remove(utilizador);
+                    db.SaveChanges();
+                }
+            }
+        }
+
     }
 }

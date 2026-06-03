@@ -31,7 +31,6 @@
             this.lstUsers = new System.Windows.Forms.ListBox();
             this.txtUser = new System.Windows.Forms.TextBox();
             this.txtPass = new System.Windows.Forms.TextBox();
-            this.btnAtualizar = new System.Windows.Forms.Button();
             this.btnCriar = new System.Windows.Forms.Button();
             this.btnRemover = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -62,15 +61,6 @@
             this.txtPass.Size = new System.Drawing.Size(191, 20);
             this.txtPass.TabIndex = 2;
             // 
-            // btnAtualizar
-            // 
-            this.btnAtualizar.Location = new System.Drawing.Point(545, 166);
-            this.btnAtualizar.Name = "btnAtualizar";
-            this.btnAtualizar.Size = new System.Drawing.Size(191, 23);
-            this.btnAtualizar.TabIndex = 3;
-            this.btnAtualizar.Text = "Atualizar";
-            this.btnAtualizar.UseVisualStyleBackColor = true;
-            // 
             // btnCriar
             // 
             this.btnCriar.Location = new System.Drawing.Point(545, 195);
@@ -79,6 +69,7 @@
             this.btnCriar.TabIndex = 4;
             this.btnCriar.Text = "Criar";
             this.btnCriar.UseVisualStyleBackColor = true;
+            this.btnCriar.Click += new System.EventHandler(this.btnCriar_Click);
             // 
             // btnRemover
             // 
@@ -88,6 +79,7 @@
             this.btnRemover.TabIndex = 5;
             this.btnRemover.Text = "Remover";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // label1
             // 
@@ -126,7 +118,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRemover);
             this.Controls.Add(this.btnCriar);
-            this.Controls.Add(this.btnAtualizar);
             this.Controls.Add(this.txtPass);
             this.Controls.Add(this.txtUser);
             this.Controls.Add(this.lstUsers);
@@ -143,7 +134,6 @@
         private System.Windows.Forms.ListBox lstUsers;
         private System.Windows.Forms.TextBox txtUser;
         private System.Windows.Forms.TextBox txtPass;
-        private System.Windows.Forms.Button btnAtualizar;
         private System.Windows.Forms.Button btnCriar;
         private System.Windows.Forms.Button btnRemover;
         private System.Windows.Forms.Label label1;
